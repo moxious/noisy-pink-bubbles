@@ -2,6 +2,17 @@
 
 Experimentation with physics and sound generation.  An audio-generating application.
 
+## Quick Start
+
+```
+yarn install
+yarn build
+yarn global add serve
+serve -s build
+```
+
+Then navigate to [http://localhost:5000](http://localhost:5000) to see the app running.
+
 ## Table of Contents
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
