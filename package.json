@@ -1,0 +1,24 @@
+{
+  "name": "noisy-pink-bubbles",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "lodash": "^4.17.4",
+    "material-ui": "^0.20.0",
+    "physicsjs": "^0.7.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-flexbox-grid": "^2.0.0",
+    "react-keypress": "^0.1.5",
+    "react-scripts": "1.0.17",
+    "tonal": "^1.1.0",
+    "tone": "^0.11.11"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

@@ -1,0 +1,44 @@
+import * as React from 'react';
+import './App.css';
+// import MusicCanvas from './components/MusicCanvas';
+import CanvasControls from './components/CanvasControls';
+import BouncingBalls from './model/worlds/BouncingBalls';
+import Conductor from './sound/Conductor';
+import BodySound from './sound/BodySound';
+// const logo = require('./logo.svg');
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      world: null,
+      conductor: new Conductor(),
+    };
+  }
+
+  componenetWillMount() {
+  }
+
+  componentDidMount() {
+    this.state.world = new BouncingBalls({ bodies: 25 });
+
+    this.state.world.getPhysics().getBodies().forEach(body => {
+      body.sounds = new BodySound(this.state.conductor, body);
+    });
+
+
+    this.state.world.getRenderer().resize();
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <CanvasControls app={this.state} />
+        <canvas id="viewport" width="500" height="500"/>
+      </div>
+    );
+  }
+}
+
+export default App;
