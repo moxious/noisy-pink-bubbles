@@ -71,18 +71,36 @@ export default class BouncingBalls extends World {
                 [renderer.width * 0.75, renderer.height * 0.75],
             ];
 
+            world.add( Physics.body('convex-polygon', {
+                x: 400,
+                y: 200,
+                vx: -0.02,
+                vertices: [
+                    {x: 20, y: 0},
+                    {x: 40, y: 0},
+                    {x: 60, y: 20},
+                    {x: 60, y: 40},
+                    {x: 40, y: 60},
+                    {x: 20, y: 60},
+                    {x: 0, y: 40},
+                    {x: 0, y: 20},
+                ],
+                styles: {
+                    fillStyle: component.palette[component.palette.length - 1],
+                },
+            }) );
+
             staticBodyCoords.forEach(coords => {
                 world.add(Physics.body('rectangle', {
                     x: coords[0], 
                     y: coords[1],
-                    mass: -20,
+                    mass: -10,
                     vx: 0, vy: 0,
-                    // radius: 30,
                     width: 30,
                     height: 30,
                     treatment: 'static',
                     styles: {
-                        fillStyle: component.palette[0],
+                        fillStyle: component.palette[component.palette.length - 1],
                     }
                 }));
             });
@@ -145,6 +163,7 @@ export default class BouncingBalls extends World {
                 Physics.behavior('newtonian', { strength: .1 }),
                 Physics.behavior('sweep-prune'),
                 Physics.behavior('body-impulse-response'),
+                // Physics.behavior('constant-acceleration'),
                 // Physics.integrator('improved-euler'),
                 edgeBounce,
             ]);

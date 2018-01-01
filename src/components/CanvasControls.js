@@ -1,7 +1,6 @@
 import * as React from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import 'react-select/dist/react-select.css';
 import Physics from 'physicsjs';
 
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';

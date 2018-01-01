@@ -47,7 +47,7 @@ export default class World {
             y: 0,// Math.random() * renderer.height,
             vx: vert ? 0 : Math.random() * 0.5 * (neg ? -1 : 1),
             vy: vert ? Math.random() * 0.5 : 0 * (neg ? -1 : 1),
-            mass: Math.random() * 10,
+            mass: Math.random() * 2,
             radius: 20,
             width: 30,
             height: 30,
