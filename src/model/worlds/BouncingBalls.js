@@ -11,7 +11,7 @@ const SPEED_LIMIT = 0.5;
  */
 export default class BouncingBalls extends World {
     constructor({
-        bodies = 25,
+        bodies = 7,
         canvasID = 'viewport',
     }) {
         super({ bodies, canvasID });

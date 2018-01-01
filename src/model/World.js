@@ -45,8 +45,8 @@ export default class World {
         let body = Physics.body('circle', {
             x: Math.random() * renderer.width,
             y: 0,// Math.random() * renderer.height,
-            vx: vert ? 0 : Math.random() * 0.5 * (neg ? -1 : 1),
-            vy: vert ? Math.random() * 0.5 : 0 * (neg ? -1 : 1),
+            vx: Math.random() * 0.5 * (neg ? -1 : 1),
+            vy: Math.random() * 0.5 * (neg ? -1 : 1),
             mass: 0.1,//Math.random() * 2,
             radius: 20,
             width: 30,
@@ -67,6 +67,30 @@ export default class World {
 
     getPhysics() {
         return this.world;
+    }
+
+    countBodies() {
+        return this.getPhysics().getBodies().length;
+    }
+
+    addBody() {
+        this.getPhysics().add(this.makeBody(this.getPhysics(), this.renderer));
+    }
+
+    removeBody() {
+        let candidate = null;
+        const bodies = this.getPhysics().getBodies();
+
+        for (let i=0; i<bodies.length; i++) {
+            if (this.bumpers && this.bumpers.isBumper(bodies[i])) {
+                continue;
+            }
+
+            candidate = bodies[i];
+            break;
+        }
+
+        this.getPhysics().remove(candidate);
     }
 
     getRenderer() {

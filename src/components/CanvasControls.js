@@ -142,6 +142,14 @@ class CanvasControls extends React.Component {
         this.state.app.conductor.coordinate(this.state.app.world);
     }
 
+    addBody(incr) {
+        if (incr > 0) {
+            return this.state.app.world.addBody();
+        }
+        
+        return this.state.app.world.removeBody();
+    }
+
     render() {
         return (
             <Toolbar>
@@ -152,6 +160,8 @@ class CanvasControls extends React.Component {
                     <RaisedButton disabled={this.state.paused} label={this.state.muteLabel} onClick={(e) => this.toggleMute(e)} />
                     <RaisedButton disabled={this.state.paused} label='Excite' onClick={(e) => this.excite(0.3, 1)} />
                     <RaisedButton disabled={this.state.paused} label='Calm' onClick={(e) => this.excite(0.3, -1)} />
+                    <RaisedButton label="+" onClick={(e) => this.addBody(1)} />
+                    <RaisedButton label="-" onClick={(e) => this.addBody(-1)} />
                 </ToolbarGroup>
                 <ToolbarGroup>
                     <SelectField value={this.state.chord}
