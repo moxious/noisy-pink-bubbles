@@ -12,7 +12,7 @@ const SPEED_LIMIT = 0.5;
  */
 export default class BouncingBalls extends World {
     constructor({
-        bodies = 15,
+        bodies = 7,
         canvasID = 'viewport',
     }) {
         super({ bodies, canvasID });
@@ -128,21 +128,18 @@ export default class BouncingBalls extends World {
     collisionsDetected(data) {
         let c;
 
+        const playAnyWithSounds = list =>
+            list.filter(item => item.sounds).forEach(item => item.sounds.play());
+
         for (let z = 0, l = data.collisions.length; z < l; z++) {
             c = data.collisions[z];
 
-            if (!c.bodyA.label || !c.bodyB.label) {
-                // console.log('Edge collision for ', c.bodyA.label || c.bodyB.label);
-                // playBody(c.bodyA.tone ? c.bodyA : c.bodyB);
+            if (!c.bodyA.sounds || !c.bodyB.sounds) {
+                // Separate case of edge collision, or bumper collision.
+                // Does the same thing, but be aware of this case.
+                playAnyWithSounds([c.bodyA, c.bodyB]);
             } else {
-                if (c.bodyB.sounds) {
-                    c.bodyB.sounds.play();
-                }
-
-                if (c.bodyA.sounds) {
-                    c.bodyA.sounds.play();
-                }
-
+                playAnyWithSounds([c.bodyA, c.bodyB]);
                 // console.log('Collide: ', c.bodyA.label, 'with', c.bodyB.label);
             }
         }
