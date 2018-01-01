@@ -13,6 +13,11 @@ export default class Conductor {
         this.tones = Tonal.Chord.notes(this.getTonalChord());        
     }
 
+    mute(isMuted) {
+        this.muted = isMuted;
+        return this.muted;
+    }
+
     setOctaves(octaves) {
         this.octaves = octaves;
         return this.octaves;
