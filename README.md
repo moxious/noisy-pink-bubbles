@@ -4,6 +4,10 @@ Experimentation with physics and sound generation.  An audio-generating applicat
 
 ## Quick Start
 
+If you just want to try it out, it's [running here](https://moxious.github.io/noisy-pink-bubbles/index.html).
+
+If you want to run it locally:
+
 ```
 yarn install
 yarn build
