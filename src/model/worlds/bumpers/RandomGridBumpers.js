@@ -53,7 +53,6 @@ export default class RandomGridBumpers extends Bumpers {
             const x = coord(i, renderer.width);
             const y = coord(this.count - (i + 1), renderer.height);
 
-            console.log('BUMPER ', x, y);
             this.bumpers.push(Physics.body('rectangle', {
                 x,
                 y,

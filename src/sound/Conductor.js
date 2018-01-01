@@ -2,7 +2,6 @@
 import * as Tonal from 'tonal';
 import * as Tone from 'tone';
 import BodySound from './BodySound';
-import ChordProgression from './ChordProgression';
 import sampler from './SampleSynth';
 
 const DEFAULT_ENVELOPE = {
@@ -15,22 +14,50 @@ const DEFAULT_ENVELOPE = {
 let singletonSampler = null;
 
 export default class Conductor {
-    constructor() {
-        this.tonic = 'C'
-        this.key = 'M';
-        this.octaves = ['2', '3', '4', '5'];
-        this.synth = 'triangle';
-        this.muted = false;
-        this.tones = Tonal.Chord.notes(this.getTonalChord());        
+    constructor(props={}) {
+        this.tonic = props.tonic || 'C';
+        this.key = props.key || 'M';
+        this.tempo = props.tempo || 50;
+        this.octaves = props.octaves || ['2', '3', '4', '5'];
+        this.synth = props.synth || 'triangle';
+        this.muted = props.muted || false;
+        this.tones = Tonal.Chord.notes(this.getTonalChord());
+        this.listeners = [];
+    }
+
+    /**
+     * Add a listener that wants to be notified of conductor changes.
+     */
+    register(listener) {
+        if (this.listeners.indexOf(listener) === -1) {
+            this.listeners.push(listener);
+        }
+    }
+
+    /**
+     * Remove a listener.
+     */
+    deregister(listener) {
+        const idx = this.listeners.indexOf(listener);
+        if (idx > -1) {
+            this.listeners.splice(idx, 1);
+        }
+        return this.listeners;
+    }
+
+    notify(property) {
+        this.listeners.forEach(listener => listener.onConductorChange(property, this[property], this));
     }
 
     mute(isMuted) {
         this.muted = isMuted;
+        this.notify('muted');
         return this.muted;
     }
 
     setOctaves(octaves) {
         this.octaves = octaves;
+        this.notify('octaves');
         return this.octaves;
     }
 
@@ -41,6 +68,7 @@ export default class Conductor {
     setSynth(synth) {
         if (synth) {
             this.synth = synth;
+            this.notify('synth');
             return this.synth;
         } 
 
@@ -81,6 +109,7 @@ export default class Conductor {
             return;
         }
         this.tonic = chord;
+        this.notify('tonic');
         this.tones = Tonal.Chord.notes(this.getTonalChord());
         console.log('CHORD: ', this.tones, ' for ', this.getTonalChord());
         return this.tones;
@@ -88,6 +117,7 @@ export default class Conductor {
 
     setTones(tones) {
         this.tones = tones;
+        this.notify('tones');
         return this.tones;
     }
 
@@ -96,16 +126,33 @@ export default class Conductor {
             this.octaves[Math.floor(Math.random() * this.octaves.length)];
     }
 
+    setTempo(tempo) {
+        this.tempo = tempo; 
+        this.notify('tempo');
+        // Set master synth tempo.
+        Tone.Transport.bpm.value = this.tempo;
+
+        return this.getTempo(); 
+    }
+
+    getTempo() { return this.tempo; }
     getTonic() { return this.tonic; }
     getKey() { return this.key; }
 
-    setTonic(tonic) { this.tonic = tonic; return this.getTonic(); }
+    setTonic(tonic) { 
+        this.tonic = tonic;
+        this.notify('tonic');
+        return this.getTonic(); 
+    }
+
     setKey(key) { 
         if (!key) {
             console.error('Bad conductor key', key);
             return;
         }
+
         this.key = key;
+        this.notify('key');
         this.tones = Tonal.Chord.notes(this.getTonalChord());
         console.log('KEY: ', this.tones, ' for ', this.getTonalChord());
         return this.getKey(); 

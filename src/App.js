@@ -5,6 +5,7 @@ import Toolbar from './components/NPBToolbar';
 import BouncingBalls from './model/worlds/BouncingBalls';
 import Conductor from './sound/Conductor';
 import BodySound from './sound/BodySound';
+import Hummer from './sound/Hummer';
 // const logo = require('./logo.svg');
 
 class App extends React.Component {
@@ -29,8 +30,10 @@ class App extends React.Component {
 
     this.state.conductor.coordinate(this.state.world);
 
-
     this.state.world.getRenderer().resize();
+
+    const h = new Hummer(this.state.conductor);
+    h.start();
   }
 
   render() {

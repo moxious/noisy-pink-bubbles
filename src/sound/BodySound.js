@@ -1,5 +1,3 @@
-import * as Tone from 'tone';
-// import * as Tonal from 'tonal';
 import _ from 'lodash';
 
 const MUTE_INTERVAL = 500;

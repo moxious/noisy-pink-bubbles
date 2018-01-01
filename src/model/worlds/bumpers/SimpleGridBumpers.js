@@ -36,7 +36,6 @@ export default class SimpleGridBumpers extends Bumpers {
             const x = bumperCoords[i][0];
             const y = bumperCoords[i][1];
 
-            console.log('BUMPER ', x, y);
             this.bumpers.push(Physics.body('rectangle', {
                 x,
                 y,
