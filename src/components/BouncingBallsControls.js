@@ -78,7 +78,8 @@ export default class BouncingBallsControls extends React.Component {
         const x = (body.state.vel.x * factor * direction);
         const y = (body.state.vel.y * factor * direction);
 
-        const scaledVec = Physics.vector(x, y);
+        const scaledVec = Physics.vector((x === 0 ? 0.1 : x), (y === 0 ? 0.1 : y));
+
         // console.log('Velocity: ', 
         //     [body.state.vel.x, body.state.vel.y],
         //     [scaledVec.x, scaledVec.y]);

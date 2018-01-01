@@ -39,7 +39,7 @@ export default class SimpleGridBumpers extends Bumpers {
             this.bumpers.push(Physics.body('rectangle', {
                 x,
                 y,
-                mass: -10,
+                mass: -5,
                 vx: 0, vy: 0,
                 width: 30,
                 height: 30,
