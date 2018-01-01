@@ -1,6 +1,9 @@
 import World from '../World';
 import Physics from 'physicsjs';
+import SimpleGridBumpers from './bumpers/SimpleGridBumpers';
 // import PIXI from 'physicsjs/dist/renderers/pixi-renderer';
+
+const SPEED_LIMIT = 0.5;
 
 /**
  * Bouncing Balls is a world populated by balls that collide with one another and produce
@@ -37,7 +40,7 @@ export default class BouncingBalls extends World {
             // constrain objects to these bounds
             var edgeBounce = Physics.behavior('edge-collision-detection', {
                 aabb: viewportBounds,
-                restitution: 1,
+                restitution: 1.05,
                 cof: 0.90,
             });
 
@@ -47,6 +50,10 @@ export default class BouncingBalls extends World {
                 () => {
                     console.log('RESIZE', renderer.width, renderer.height);
                     
+                    if (component.bumpers) {
+                        component.bumpers.reposition(renderer);
+                    }
+
                     // as of 0.7.0 the renderer will auto resize... so we just take the values from the renderer
                     viewportBounds = Physics.aabb(0, 0, renderer.width, renderer.height);
                     
@@ -57,20 +64,6 @@ export default class BouncingBalls extends World {
             for (let i = 0; i < bodies; i++) {
                 world.add(component.makeBody(world, renderer));
             }
-
-            const staticBodyCoords = [
-                [renderer.width * 0.25, renderer.height * 0.25],
-                [renderer.width * 0.25, renderer.height * 0.50],
-                [renderer.width * 0.25, renderer.height * 0.75],
-
-                [renderer.width * 0.50, renderer.height * 0.25],
-                [renderer.width * 0.50, renderer.height * 0.50],
-                [renderer.width * 0.50, renderer.height * 0.75],
-
-                [renderer.width * 0.75, renderer.height * 0.25],
-                [renderer.width * 0.75, renderer.height * 0.50],
-                [renderer.width * 0.75, renderer.height * 0.75],
-            ];
 
             world.add( Physics.body('convex-polygon', {
                 x: 400,
@@ -90,21 +83,6 @@ export default class BouncingBalls extends World {
                     fillStyle: component.palette[component.palette.length - 1],
                 },
             }) );
-
-            staticBodyCoords.forEach(coords => {
-                world.add(Physics.body('rectangle', {
-                    x: coords[0], 
-                    y: coords[1],
-                    mass: -10,
-                    vx: 0, vy: 0,
-                    width: 30,
-                    height: 30,
-                    treatment: 'static',
-                    styles: {
-                        fillStyle: component.palette[component.palette.length - 1],
-                    }
-                }));
-            });
 
             // add some fun interaction
             const attractor = Physics.behavior('attractor', {
@@ -132,6 +110,10 @@ export default class BouncingBalls extends World {
                 var c;
                 for (let z = 0, l = data.collisions.length; z < l; z++) {
                     c = data.collisions[z];
+
+                    // component.applySpeedLimit(c.bodyA);
+                    // component.applySpeedLimit(c.bodyB);
+
                     if (!c.bodyA.label || !c.bodyB.label) {
                         // console.log('Edge collision for ', c.bodyA.label || c.bodyB.label);
                         // playBody(c.bodyA.tone ? c.bodyA : c.bodyB);
@@ -183,5 +165,6 @@ export default class BouncingBalls extends World {
 
         this.renderer = renderer;
         this.world = createdWorld;
-    }    
+        this.bumpers = new SimpleGridBumpers(this, this.renderer);
+    }
 }
