@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 // import MusicCanvas from './components/MusicCanvas';
-import CanvasControls from './components/CanvasControls';
+import Toolbar from './components/NPBToolbar';
 import BouncingBalls from './model/worlds/BouncingBalls';
 import Conductor from './sound/Conductor';
 import BodySound from './sound/BodySound';
@@ -36,7 +36,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <CanvasControls app={this.state} />
+        <Toolbar app={this.state} />
         <canvas id="viewport" width="1000" height="500"/>
       </div>
     );

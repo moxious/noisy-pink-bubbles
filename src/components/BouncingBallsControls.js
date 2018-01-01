@@ -5,9 +5,9 @@ import Physics from 'physicsjs';
 
 // import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import {Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import { ToolbarGroup } from 'material-ui/Toolbar';
 
-class CanvasControls extends React.Component {
+export default class BouncingBallsControls extends React.Component {
     constructor(props) {
         super(props);
 
@@ -152,53 +152,51 @@ class CanvasControls extends React.Component {
 
     render() {
         return (
-            <Toolbar>
-                <ToolbarGroup>
-                    <RaisedButton label={this.state.toggleLabel} onClick={(e) => this.togglePause(e)} />
-                    {/* <RaisedButton disabled={this.state.paused} label='Downwarp' onClick={(e) => this.downwarp(e)} />
-                    <RaisedButton disabled={this.state.paused} label='Upwarp' onClick={(e) => this.upwarp(e)} /> */}
-                    <RaisedButton disabled={this.state.paused} label={this.state.muteLabel} onClick={(e) => this.toggleMute(e)} />
-                    <RaisedButton disabled={this.state.paused} label='Excite' onClick={(e) => this.excite(0.3, 1)} />
-                    <RaisedButton disabled={this.state.paused} label='Calm' onClick={(e) => this.excite(0.3, -1)} />
-                    <RaisedButton label="+" onClick={(e) => this.addBody(1)} />
-                    <RaisedButton label="-" onClick={(e) => this.addBody(-1)} />
-                </ToolbarGroup>
-                <ToolbarGroup>
-                    <SelectField value={this.state.chord}
-                        onChange={(e, i, v) => this.changeChord(e, i, v)}>
-                        <MenuItem value='A' primaryText='A'/>
-                        <MenuItem value='Bb' primaryText='A#/Bb'/>
-                        <MenuItem value='B' primaryText='B'/>
-                        <MenuItem value='C' primaryText='C'/>
-                        <MenuItem value='Db' primaryText='C#/Db'/>
-                        <MenuItem value='D' primaryText='D'/>
-                        <MenuItem value='Eb' primaryText='D#/Eb'/>
-                        <MenuItem value='E' primaryText='E'/>
-                        <MenuItem value='F' primaryText='F'/>
-                        <MenuItem value='Gb' primaryText='F#/Gb'/>
-                        <MenuItem value='G' primaryText='G'/>
-                        <MenuItem value='Ab' primaryText='G#/Ab'/>
-                    </SelectField>
-                    <SelectField value={this.state.key}
-                        onChange={(e, i, v) => this.changeKey(e, i, v)}>
-                        <MenuItem value="M" primaryText="Major"/>
-                        <MenuItem value="m" primaryText="Minor"/>
-                        <MenuItem value="M7" primaryText="Major7"/>
-                        <MenuItem value="m7" primaryText="Minor7"/>
-                    </SelectField>
-                    <SelectField value={this.state.synth}
-                        onChange={(e, i, v) => this.changeSynth(e, i, v)}>
-                        <MenuItem value='AM' primaryText='Synth: Basic'/>
-                        <MenuItem value='pwm' primaryText='Synth: pwm'/>
-                        <MenuItem value='square' primaryText='Synth: square'/>
-                        <MenuItem value='triangle' primaryText='Synth: triangle'/>
-                        <MenuItem value='sine' primaryText='Synth: Sine'/>
-                        <MenuItem value='sawtooth' primaryText='Synth: Sawtooth'/>
-                    </SelectField>
-                </ToolbarGroup>
-            </Toolbar>
+            <ToolbarGroup>
+            <ToolbarGroup>
+                <RaisedButton label={this.state.toggleLabel} onClick={(e) => this.togglePause(e)} />
+                {/* <RaisedButton disabled={this.state.paused} label='Downwarp' onClick={(e) => this.downwarp(e)} />
+                <RaisedButton disabled={this.state.paused} label='Upwarp' onClick={(e) => this.upwarp(e)} /> */}
+                <RaisedButton disabled={this.state.paused} label={this.state.muteLabel} onClick={(e) => this.toggleMute(e)} />
+                <RaisedButton disabled={this.state.paused} label='Excite' onClick={(e) => this.excite(0.3, 1)} />
+                <RaisedButton disabled={this.state.paused} label='Calm' onClick={(e) => this.excite(0.3, -1)} />
+                <RaisedButton label="+" onClick={(e) => this.addBody(1)} />
+                <RaisedButton label="-" onClick={(e) => this.addBody(-1)} />
+            </ToolbarGroup>
+            <ToolbarGroup>
+                <SelectField value={this.state.chord}
+                    onChange={(e, i, v) => this.changeChord(e, i, v)}>
+                    <MenuItem value='A' primaryText='A'/>
+                    <MenuItem value='Bb' primaryText='A#/Bb'/>
+                    <MenuItem value='B' primaryText='B'/>
+                    <MenuItem value='C' primaryText='C'/>
+                    <MenuItem value='Db' primaryText='C#/Db'/>
+                    <MenuItem value='D' primaryText='D'/>
+                    <MenuItem value='Eb' primaryText='D#/Eb'/>
+                    <MenuItem value='E' primaryText='E'/>
+                    <MenuItem value='F' primaryText='F'/>
+                    <MenuItem value='Gb' primaryText='F#/Gb'/>
+                    <MenuItem value='G' primaryText='G'/>
+                    <MenuItem value='Ab' primaryText='G#/Ab'/>
+                </SelectField>
+                <SelectField value={this.state.key}
+                    onChange={(e, i, v) => this.changeKey(e, i, v)}>
+                    <MenuItem value="M" primaryText="Major"/>
+                    <MenuItem value="m" primaryText="Minor"/>
+                    <MenuItem value="M7" primaryText="Major7"/>
+                    <MenuItem value="m7" primaryText="Minor7"/>
+                </SelectField>
+                <SelectField value={this.state.synth}
+                    onChange={(e, i, v) => this.changeSynth(e, i, v)}>
+                    <MenuItem value='AM' primaryText='Synth: Basic'/>
+                    <MenuItem value='pwm' primaryText='Synth: pwm'/>
+                    <MenuItem value='square' primaryText='Synth: square'/>
+                    <MenuItem value='triangle' primaryText='Synth: triangle'/>
+                    <MenuItem value='sine' primaryText='Synth: Sine'/>
+                    <MenuItem value='sawtooth' primaryText='Synth: Sawtooth'/>
+                </SelectField>
+            </ToolbarGroup>
+            </ToolbarGroup>
         );
     }
 }
-
-export default CanvasControls;
