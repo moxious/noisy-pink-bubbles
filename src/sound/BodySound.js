@@ -49,7 +49,7 @@ export default class BodySound {
 
         if (!this.sounds.lastPlayed) {
             // console.log('Playing ', this.tone);
-            this.sounds.synth.triggerAttackRelease(this.sounds.tone, '16n');
+            this.sounds.synth.triggerAttackRelease(this.sounds.tone, '32n');
             this.sounds.lastPlayed = now;
         } else {
             if (now - this.sounds.lastPlayed < MUTE_INTERVAL) {
@@ -58,7 +58,7 @@ export default class BodySound {
             } else {
                 // console.log('Playing secondary ', this.tone, 'through', this.synth);
                 this.sounds.lastPlayed = now;
-                this.sounds.synth.triggerAttackRelease(this.sounds.tone, '16n');
+                this.sounds.synth.triggerAttackRelease(this.sounds.tone, '32n');
             }
         }
     }

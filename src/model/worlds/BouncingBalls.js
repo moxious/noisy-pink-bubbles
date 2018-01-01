@@ -72,12 +72,14 @@ export default class BouncingBalls extends World {
             ];
 
             staticBodyCoords.forEach(coords => {
-                world.add(Physics.body('circle', {
+                world.add(Physics.body('rectangle', {
                     x: coords[0], 
                     y: coords[1],
-                    mass: 20,
+                    mass: -20,
                     vx: 0, vy: 0,
-                    radius: 30,
+                    // radius: 30,
+                    width: 30,
+                    height: 30,
                     treatment: 'static',
                     styles: {
                         fillStyle: component.palette[0],

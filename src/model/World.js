@@ -23,9 +23,10 @@ export default class World {
             const c = this.chooseColor();
 
             if (body.styles.fillStyle && c !== body.styles.fillStyle) {
-                // console.log(body.view);
+                // Deep magic; force renderer to re-assign.  Just plugging in a new
+                // color doesn't work because the view is dynamically generated PNG.
                 body.view = undefined;
-                console.log('WAS: ', body.styles.fillStyle, 'NOW', c);
+                // console.log('WAS: ', body.styles.fillStyle, 'NOW', c);
                 body.styles.fillStyle = c;
             }
         });
@@ -43,7 +44,7 @@ export default class World {
 
         let body = Physics.body('circle', {
             x: Math.random() * renderer.width,
-            y: Math.random() * renderer.height,
+            y: 0,// Math.random() * renderer.height,
             vx: vert ? 0 : Math.random() * 0.5 * (neg ? -1 : 1),
             vy: vert ? Math.random() * 0.5 : 0 * (neg ? -1 : 1),
             mass: Math.random() * 10,
