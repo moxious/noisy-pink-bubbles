@@ -3,7 +3,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Physics from 'physicsjs';
 
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+// import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
@@ -105,9 +105,9 @@ class CanvasControls extends React.Component {
     toggleMute() {
         if (this.state.muted) {
             this.setState({ muted: false, muteLabel: 'Mute' });
-            this.state.app.conductor.muted = false;            
+            this.state.app.conductor.mute(false);
         } else {
-            this.state.app.conductor.muted = true;
+            this.state.app.conductor.mute(true);
             this.setState({ muted: true, muteLabel: 'Unmute' });
         }
     }
