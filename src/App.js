@@ -21,11 +21,13 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.state.world = new BouncingBalls({ bodies: 25 });
+    this.state.world = new BouncingBalls({ });
 
     this.state.world.getPhysics().getBodies().forEach(body => {
       body.sounds = new BodySound(this.state.conductor, body);
     });
+
+    this.state.conductor.coordinate(this.state.world);
 
 
     this.state.world.getRenderer().resize();

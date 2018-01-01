@@ -1,17 +1,16 @@
 // import * as Tone from 'tone';
 import * as Tonal from 'tonal';
 import BodySound from './BodySound';
+import ChordProgression from './ChordProgression';
 
 export default class Conductor {
     constructor() {
         this.tonic = 'C'
         this.key = 'M';
         this.octaves = ['2', '3', '4', '5'];
-        this.synth = 'AM';
+        this.synth = 'triangle';
         this.muted = false;
-        this.tones = Tonal.Chord.notes(this.getTonalChord());
-        console.log('Tones ', this.tones, ' from ', this.getTonalChord());
-
+        this.tones = Tonal.Chord.notes(this.getTonalChord());        
     }
 
     setOctaves(octaves) {
@@ -23,9 +22,13 @@ export default class Conductor {
         return `${this.tonic}${this.key}`;
     }
 
-    setSynth(world, synth) {
-        this.synth = synth;
-        return this.synth;
+    setSynth(synth) {
+        if (synth) {
+            this.synth = synth;
+            return this.synth;
+        } 
+
+        return null;
     }
 
     setChord(chord) {
@@ -64,11 +67,11 @@ export default class Conductor {
         return this.getKey(); 
     }
 
-    coordinate(world) {
+    coordinate(world, replaceSynths = false) {
         world.getPhysics().getBodies().forEach(body => {
             if (body.sounds) {
                 console.log("coodinate/reassign");
-                body.sounds.reassign(false);
+                body.sounds.reassign(replaceSynths);
             } else {
                 console.log('coordinate/new');
                 body.sounds = new BodySound(this, body);

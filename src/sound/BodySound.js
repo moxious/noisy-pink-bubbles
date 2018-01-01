@@ -1,24 +1,38 @@
 import * as Tone from 'tone';
 // import * as Tonal from 'tonal';
 import _ from 'lodash';
+import sampler from './SampleSynth';
 
 const MUTE_INTERVAL = 500;
+
+let singletonSampler = null;
 
 export default class BodySound {
     constructor(conductor, body, synth) {
         this.conductor = conductor;
         this.body = body;
 
+        this.envelope = {
+            attack: 0.02,
+            decay: 0.1,
+            sustain: 0.2,
+            release: 0.9,
+        };
+
         this.sounds = {
             tone: this.conductor.randTone(),
             synth: this.makeSynth(),
         };
 
-        this.reassign(synth);
+        this.reassign(false);
     }
 
     reassign(replaceSynth) {
         // console.log('reassign ', this.sounds.synth, typeof this.sounds.synth);
+        if (replaceSynth) {
+            this.sounds.synth = this.makeSynth();
+        }
+
         this.sounds.tone = this.conductor.randTone();
         return this.sounds;
     }
@@ -27,7 +41,7 @@ export default class BodySound {
         if (!_.get(this.sounds, 'synth') || !_.get(this.sounds, 'tone')) {
             console.log('Cannot play non-tonal body ', this.body);
             return;
-        } else if(this.conductor.muted) {
+        } else if (this.conductor.muted) {
             return;
         }
 
@@ -50,29 +64,30 @@ export default class BodySound {
     }
 
     makeSynth() {
-        // return new Tone.AMSynth().toMaster();
+        const validTypes = ['pwm', 'square', 'triangle', 'sine', 'sawtooth'];
+        const constructors = {
+            // AM: Tone.AMSynth,
+        };
+        console.log('Making synth', this.conductor.synth);
 
-        console.log('Making synth');
-
-        if (this.conductor.synth === 'pwm') {
+        if (validTypes.indexOf(this.conductor.synth) > -1) {
             return new Tone.Synth({
                 oscillator: {
-                    type: 'pwm',
-                    modulationFrequency: 0.2,
+                    type: this.conductor.synth,
                 },
-                envelope: {
-                    attack: 0.02,
-                    decay: 0.1,
-                    sustain: 0.2,
-                    release: 0.9,
-                }
+                envelope: this.envelope,
             }).toMaster();
+        } else if (constructors[this.conductor.synth]) {
+            return constructors[this.conductor.synth]().toMaster();
         }
 
-        if (this.conductor.synth === 'AM') {
-            return new Tone.AMSynth().toMaster();
+        if (this.conductor.synth === 'sampler') {
+            if (!singletonSampler) {
+                singletonSampler = sampler();
+            }
+            return singletonSampler;
         }
 
-        return new Tone.Synth();
+        return new Tone.Synth().toMaster();
     }
 }

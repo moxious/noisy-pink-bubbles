@@ -36,8 +36,8 @@ export default class BouncingBalls extends World {
             // constrain objects to these bounds
             var edgeBounce = Physics.behavior('edge-collision-detection', {
                 aabb: viewportBounds,
-                restitution: 0.99,
-                cof: 0.8,
+                restitution: 1,
+                cof: 0.90,
             });
 
             // resize events
@@ -57,6 +57,34 @@ export default class BouncingBalls extends World {
                 world.add(component.makeBody(world, renderer));
             }
 
+            const staticBodyCoords = [
+                [renderer.width * 0.25, renderer.height * 0.25],
+                [renderer.width * 0.25, renderer.height * 0.50],
+                [renderer.width * 0.25, renderer.height * 0.75],
+
+                [renderer.width * 0.50, renderer.height * 0.25],
+                [renderer.width * 0.50, renderer.height * 0.50],
+                [renderer.width * 0.50, renderer.height * 0.75],
+
+                [renderer.width * 0.75, renderer.height * 0.25],
+                [renderer.width * 0.75, renderer.height * 0.50],
+                [renderer.width * 0.75, renderer.height * 0.75],
+            ];
+
+            staticBodyCoords.forEach(coords => {
+                world.add(Physics.body('circle', {
+                    x: coords[0], 
+                    y: coords[1],
+                    mass: 20,
+                    vx: 0, vy: 0,
+                    radius: 30,
+                    treatment: 'static',
+                    styles: {
+                        fillStyle: component.palette[0],
+                    }
+                }));
+            });
+
             // add some fun interaction
             const attractor = Physics.behavior('attractor', {
                 order: 0,
@@ -65,9 +93,9 @@ export default class BouncingBalls extends World {
 
             world.on({
                 'interact:poke': function (pos) {
-                    world.wakeUpAll();
-                    attractor.position(pos);
-                    world.add(attractor);
+                    // world.wakeUpAll();
+                    // attractor.position(pos);
+                    // world.add(attractor);
                 },
                 'interact:move': function (pos) {
                     attractor.position(pos);
@@ -112,7 +140,7 @@ export default class BouncingBalls extends World {
             world.add([
                 Physics.behavior('interactive', { el: renderer.container }),
                 Physics.behavior('body-collision-detection', { channel: 'collisions:detected' }),
-                Physics.behavior('newtonian', { strength: .001 }),
+                Physics.behavior('newtonian', { strength: .1 }),
                 Physics.behavior('sweep-prune'),
                 Physics.behavior('body-impulse-response'),
                 // Physics.integrator('improved-euler'),
@@ -122,7 +150,13 @@ export default class BouncingBalls extends World {
             world.unpause();
 
             // subscribe to ticker to advance the simulation
-            Physics.util.ticker.on((time) => world.step(time));
+            Physics.util.ticker.on((time) => {
+                // const vectors = world.getBodies().map(body => Math.abs(body.state.vel.x) + Math.abs(body.state.vel.y)).sort().reverse();
+                // const fastest = vectors[0];
+                // const total = vectors.reduce((a, b) => a + b, 0);
+                // console.log('Fastest vector: ', fastest, 'total', total);
+                world.step(time);
+            });
         });
 
         this.renderer = renderer;
