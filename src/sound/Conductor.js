@@ -1,7 +1,18 @@
 // import * as Tone from 'tone';
 import * as Tonal from 'tonal';
+import * as Tone from 'tone';
 import BodySound from './BodySound';
 import ChordProgression from './ChordProgression';
+import sampler from './SampleSynth';
+
+const DEFAULT_ENVELOPE = {
+    attack: 0.02,
+    decay: 0.1,
+    sustain: 0.2,
+    release: 0.9,
+};
+
+let singletonSampler = null;
 
 export default class Conductor {
     constructor() {
@@ -34,6 +45,34 @@ export default class Conductor {
         } 
 
         return null;
+    }
+
+    makeSynth(envelope = DEFAULT_ENVELOPE) {
+        const validTypes = ['pwm', 'square', 'triangle', 'sine', 'sawtooth'];
+        const constructors = {
+            // AM: Tone.AMSynth,
+        };
+        console.log('Making synth', this.synth);
+
+        if (validTypes.indexOf(this.synth) > -1) {
+            return new Tone.Synth({
+                oscillator: {
+                    type: this.synth,
+                },
+                envelope,
+            }).toMaster();
+        } else if (constructors[this.synth]) {
+            return constructors[this.synth]().toMaster();
+        }
+
+        if (this.synth === 'sampler') {
+            if (!singletonSampler) {
+                singletonSampler = sampler();
+            }
+            return singletonSampler;
+        }
+
+        return new Tone.Synth().toMaster();
     }
 
     setChord(chord) {

@@ -1,11 +1,8 @@
 import * as Tone from 'tone';
 // import * as Tonal from 'tonal';
 import _ from 'lodash';
-import sampler from './SampleSynth';
 
 const MUTE_INTERVAL = 500;
-
-let singletonSampler = null;
 
 export default class BodySound {
     constructor(conductor, body, synth) {
@@ -21,7 +18,7 @@ export default class BodySound {
 
         this.sounds = {
             tone: this.conductor.randTone(),
-            synth: this.makeSynth(),
+            synth: this.conductor.makeSynth(),
         };
 
         this.reassign(false);
@@ -30,7 +27,7 @@ export default class BodySound {
     reassign(replaceSynth) {
         // console.log('reassign ', this.sounds.synth, typeof this.sounds.synth);
         if (replaceSynth) {
-            this.sounds.synth = this.makeSynth();
+            this.sounds.synth = this.conductor.makeSynth();
         }
 
         this.sounds.tone = this.conductor.randTone();
@@ -61,33 +58,5 @@ export default class BodySound {
                 this.sounds.synth.triggerAttackRelease(this.sounds.tone, '32n');
             }
         }
-    }
-
-    makeSynth() {
-        const validTypes = ['pwm', 'square', 'triangle', 'sine', 'sawtooth'];
-        const constructors = {
-            // AM: Tone.AMSynth,
-        };
-        console.log('Making synth', this.conductor.synth);
-
-        if (validTypes.indexOf(this.conductor.synth) > -1) {
-            return new Tone.Synth({
-                oscillator: {
-                    type: this.conductor.synth,
-                },
-                envelope: this.envelope,
-            }).toMaster();
-        } else if (constructors[this.conductor.synth]) {
-            return constructors[this.conductor.synth]().toMaster();
-        }
-
-        if (this.conductor.synth === 'sampler') {
-            if (!singletonSampler) {
-                singletonSampler = sampler();
-            }
-            return singletonSampler;
-        }
-
-        return new Tone.Synth().toMaster();
     }
 }
