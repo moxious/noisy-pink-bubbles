@@ -18,7 +18,7 @@ export default class Conductor {
         this.tonic = props.tonic || 'C';
         this.key = props.key || 'M';
         this.tempo = props.tempo || 50;
-        this.octaves = props.octaves || ['2', '3', '4', '5'];
+        this.octaves = props.octaves || ['3', '4', '5'];
         this.synth = props.synth || 'triangle';
         this.muted = props.muted || false;
         this.tones = Tonal.Chord.notes(this.getTonalChord());
@@ -127,6 +127,8 @@ export default class Conductor {
     }
 
     setTempo(tempo) {
+        if (!tempo || tempo < 2 || tempo > 250) { return; }
+        console.log('Tempo: ', this.tempo, ' => ', tempo);
         this.tempo = tempo; 
         this.notify('tempo');
         // Set master synth tempo.
@@ -161,10 +163,10 @@ export default class Conductor {
     coordinate(world, replaceSynths = false) {
         world.getPhysics().getBodies().forEach(body => {
             if (body.sounds) {
-                console.log("coodinate/reassign");
+                // console.log("coodinate/reassign");
                 body.sounds.reassign(replaceSynths);
             } else {
-                console.log('coordinate/new');
+                // console.log('coordinate/new');
                 body.sounds = new BodySound(this, body);
             }
         });

@@ -144,7 +144,7 @@ export default class BouncingBallsControls extends React.Component {
 
     addBody(incr) {
         if (incr > 0) {
-            return this.state.app.world.addBody();
+            return this.state.app.world.addBody(this.state.app.conductor);
         }
         
         return this.state.app.world.removeBody();

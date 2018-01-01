@@ -1,5 +1,6 @@
 import Physics from 'physicsjs';
 import choosePalette from './Palette';
+import BodySound from '../sound/BodySound';
 
 /**
  * A world is an abstract physics container full of bodies and interactions.
@@ -16,7 +17,7 @@ export default class World {
     repalette() {
         const p = choosePalette();
 
-        console.log('REPALETTE old ', this.palette, ' new ', p);
+        // console.log('REPALETTE old ', this.palette, ' new ', p);
         this.palette = p;
 
         this.getPhysics().getBodies().forEach(body => {
@@ -39,7 +40,6 @@ export default class World {
     }
 
     makeBody(world, renderer) {
-        const vert = Math.random() > 0.5;
         const neg = Math.random() > 0.5;
 
         let body = Physics.body('circle', {
@@ -73,8 +73,10 @@ export default class World {
         return this.getPhysics().getBodies().length;
     }
 
-    addBody() {
-        this.getPhysics().add(this.makeBody(this.getPhysics(), this.renderer));
+    addBody(conductor) {
+        const body = this.makeBody(this.getPhysics(), this.renderer);
+        body.sounds = new BodySound(conductor, body);
+        this.getPhysics().add(body);
     }
 
     removeBody() {

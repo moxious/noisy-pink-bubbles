@@ -14,6 +14,7 @@ class App extends React.Component {
 
     this.state = {
       world: null,
+      hummer: null,
       conductor: new Conductor(),
     };
   }
@@ -23,6 +24,9 @@ class App extends React.Component {
 
   componentDidMount() {
     this.state.world = new BouncingBalls({ });
+    this.state.hummer = new Hummer(this.state.conductor);
+
+    this.state.hummer.start();
 
     this.state.world.getPhysics().getBodies().forEach(body => {
       body.sounds = new BodySound(this.state.conductor, body);
@@ -31,9 +35,6 @@ class App extends React.Component {
     this.state.conductor.coordinate(this.state.world);
 
     this.state.world.getRenderer().resize();
-
-    const h = new Hummer(this.state.conductor);
-    h.start();
   }
 
   render() {

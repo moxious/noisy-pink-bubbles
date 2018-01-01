@@ -1,5 +1,6 @@
 import * as React from 'react';
 import BouncingBallsControls from './BouncingBallsControls';
+import HummerControls from './HummerControls';
 import { Toolbar } from 'material-ui/Toolbar';
 
 export default class NPBToolbar extends React.Component {
@@ -14,6 +15,7 @@ export default class NPBToolbar extends React.Component {
     render() {
         return (
             <Toolbar>
+                <HummerControls app={this.state.app}/>
                 <BouncingBallsControls app={this.state.app}/>
             </Toolbar>
         );

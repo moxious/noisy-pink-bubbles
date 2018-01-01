@@ -32,7 +32,6 @@ export default class ChordProgression {
         }
 
         this.activeSet = this.toneSets[this.index];
-        console.log('CP new activeSet', this.activeSet);
         return this.activeSet;
     }
 };
