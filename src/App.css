@@ -2,8 +2,12 @@ body {
   height: 100% !important;
   width: 100% !important;
   position: absolute;
-  padding-right: 24px;
-  padding-left: 24px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  /* padding-right: 24px;
+  padding-left: 24px; */
 }
 
 .App {
@@ -13,9 +17,10 @@ body {
 }
 
 .App canvas#viewport {
-  border: 1px solid black;
-  padding-left: 10px;
-  padding-right: 10px;
+  right: 0px;
+  bottom: -50px;
+  left: 0px;
+  top: 50px;
   width: 100% !important;
   height: 100% !important;
 /*  position: relative !important; */

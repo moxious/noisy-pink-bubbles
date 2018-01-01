@@ -37,7 +37,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <CanvasControls app={this.state} />
-        <canvas id="viewport" width="500" height="500"/>
+        <canvas id="viewport" width="1000" height="500"/>
       </div>
     );
   }

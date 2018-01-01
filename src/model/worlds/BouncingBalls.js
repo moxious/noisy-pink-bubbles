@@ -1,5 +1,6 @@
 import World from '../World';
 import Physics from 'physicsjs';
+// import PIXI from 'physicsjs/dist/renderers/pixi-renderer';
 
 /**
  * Bouncing Balls is a world populated by balls that collide with one another and produce
