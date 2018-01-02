@@ -63,16 +63,6 @@ export default class BouncingBalls extends World {
                 world.add(component.makeBody(world, renderer));
             }
 
-            world.add(Physics.body('convex-polygon', {
-                x: 400,
-                y: 200,
-                vx: -0.02,
-                vertices: shapes.octagon(),
-                styles: {
-                    fillStyle: component.palette[component.palette.length - 1],
-                },
-            }));
-
             // add some fun interaction
             attractor = Physics.behavior('attractor', {
                 order: 0,
