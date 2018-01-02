@@ -17,7 +17,7 @@ export default class Conductor {
     constructor(props={}) {
         this.tonic = props.tonic || 'C';
         this.key = props.key || 'M';
-        this.tempo = props.tempo || 50;
+        this.tempo = props.tempo || 90;
         this.octaves = props.octaves || ['3', '4', '5'];
         this.synth = props.synth || 'triangle';
         this.muted = props.muted || false;
