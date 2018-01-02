@@ -188,8 +188,8 @@ export default class BouncingBallsControls extends React.Component {
                 <IconButton disabled={this.state.paused} tooltip="Speed Up" onClick={(e) => this.excite(0.3, 1)}><FastForward/></IconButton>
                 <IconButton disabled={this.state.paused} tooltip="Slow Down" onClick={(e) => this.excite(0.3, -1)}><SlowMotion/></IconButton>
 
-                <IconButton disabled={this.state.paused} tooltip="Add Ball" onClick={(e) => this.addBody(1)}><AddCircle/></IconButton>
-                <IconButton disabled={this.state.paused} tooltip="Remove Ball" onClick={(e) => this.addBody(-1)}><RemoveCircle/></IconButton>
+                {/* <IconButton disabled={this.state.paused} tooltip="Add Ball" onClick={(e) => this.addBody(1)}><AddCircle/></IconButton>
+                <IconButton disabled={this.state.paused} tooltip="Remove Ball" onClick={(e) => this.addBody(-1)}><RemoveCircle/></IconButton> */}
             </ToolbarGroup>
             <ToolbarGroup>
                 <SelectField value={this.state.chord} id='tonicSelector'
