@@ -23,13 +23,18 @@ const schemes = ['sequential',
  * the google people.
  * https://www.npmjs.com/package/google-palette
  */
-export default () => {
+export default (renderer) => {
     const randScheme = schemes[Math.floor(Math.random() * schemes.length)];
     const p = palette(randScheme, Math.floor(Math.random() * 8) + 5);
     if (!p) {
         throw new Error('Invalid palette ' + randScheme);
     }
 
+    if (renderer && renderer.stage) {
+        // PIXI wants different colors.
+        return p.map(color => `0x${color}`);
+    }
+
     // console.log('Palette ', randScheme, p);
-    return p.map(color => `0x${color}`);
+    return p.map(color => `#${color}`);
 }

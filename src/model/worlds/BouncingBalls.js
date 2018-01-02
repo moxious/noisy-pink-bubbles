@@ -2,6 +2,7 @@ import World from '../World';
 import Physics from 'physicsjs';
 import SimpleGridBumpers from './bumpers/SimpleGridBumpers';
 import BodySound from '../../sound/BodySound';
+import choosePalette from '../Palette';
 
 // Maximum velocity in any given direction x or y.
 // Bubbles won't be allowed to move faster than this, or animation goes haywire
@@ -23,10 +24,14 @@ export default class BouncingBalls extends World {
         const component = this;
         let attractor = null;
 
-        const renderer = Physics.renderer('pixi', {
+        const renderer = Physics.renderer('canvas', {
             el: canvasID,
             // meta: true,
         });
+
+        // Assign a palette specific to the renderer since pixi
+        // works differently
+        component.palette = choosePalette(renderer);
 
         console.log('Renderer', renderer);
         const createdWorld = Physics(world => {

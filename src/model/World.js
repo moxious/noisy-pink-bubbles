@@ -41,10 +41,10 @@ export default class World {
             body.view = undefined;
 
             if (body.treatment === 'static') {
-                body.styles = this.styleBumper();
+                this.styleBumper(body);
             } else {
-                if (Math.random() < NON_EMOJI_PERCENT) {
-                    body.styles = this.styleBubble();
+                if (Math.random() < NON_EMOJI_PERCENT || !this.getRenderer().createDisplay) {
+                    this.styleBubble(body);
                 } else {
                     body.view = this.getRenderer().createDisplay('sprite', {
                         texture: Emoji.random(),
@@ -75,26 +75,40 @@ export default class World {
         return this.palette[this.palette.length - 1];
     }
 
-    styleBumper() {
-        return {
+    styleBumper(body) {
+        const styles = {
             lineWidth: 2,
             strokeStyle: '#000000',
             fillStyle: this.palette[this.palette.length - 1],
+        };
+
+        if (body) {
+            body.styles = styles;
+            return body;
         }
+
+        return styles;
     }
 
-    styleBubble() {
+    styleBubble(body) {
         const colorIdx = Math.floor(Math.random() * this.palette.length);
         // Pick a "far away" color in the palette for border contrast.
         const borderIdx = (colorIdx + (this.palette.length / 2)) % this.palette.length;
         const angleIdx = (colorIdx + 1) % this.palette.length;
         
-        return {
+        const styles = {
             lineWidth: 2,
             strokeStyle: this.palette[borderIdx],
             fillStyle: this.palette[colorIdx],
             angleIndictor: this.palette[angleIdx],
         };
+
+        if (body) {
+            body.styles = styles;
+            return body;
+        }
+
+        return styles;
     }
 
     chooseColor() {
@@ -107,17 +121,18 @@ export default class World {
         const numberDefault = (value, fallback) =>
             isNaN(value) ? fallback : value;
 
-        const style = {};
-        if (Math.random() < NON_EMOJI_PERCENT) {
-            style.styles = opts.styles || this.styleBubble();
-        } else {
-            style.view = renderer.createDisplay('sprite', {
+        const s = {};
+        if (Math.random() < NON_EMOJI_PERCENT || renderer.createDisplay) {
+            console.log('Canvas style bubble');
+            s.styles = opts.styles || this.styleBubble();
+        } else {            
+            s.view = renderer.createDisplay('sprite', {
                 texture: Emoji.random(),
                 anchor: { x: 0.5, y: 0.5 },
             });
         }
 
-        let body = Physics.body(opts.shape || 'circle', _.merge({
+        const bodyProps = _.merge({
             x: numberDefault(opts.x, Math.random() * renderer.width),
             y: numberDefault(opts.y, 0),
             vx: numberDefault(opts.vx, (Math.random() * 0.5 * (neg ? -1 : 1))),
@@ -130,9 +145,11 @@ export default class World {
             label: opts.label || 'body-' + (++this.bodyCounter),
             restitution: numberDefault(opts.restitution, 1),
             treatment: opts.treatment || 'dynamic',
-        }, style));
+        }, s);
 
-        return body;
+        console.log('Bodyprops', bodyProps);
+
+        return Physics.body(opts.shape || 'circle', bodyProps);
     }
 
     getPhysics() {

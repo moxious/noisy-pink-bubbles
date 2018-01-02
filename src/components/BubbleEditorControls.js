@@ -5,9 +5,8 @@ import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import EditMode from 'material-ui/svg-icons/editor/mode-edit';
-import Toggle from 'material-ui/Toggle';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-import { ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
+import { ToolbarGroup } from 'material-ui/Toolbar';
 
 const VECTOR_UP = { x: 0, y: -0.5 };
 const VECTOR_DOWN = { x: 0, y: 0.5 };
