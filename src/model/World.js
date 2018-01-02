@@ -69,8 +69,9 @@ export default class World {
 
     styleBubble() {
         const colorIdx = Math.floor(Math.random() * this.palette.length);
-        const borderIdx = (colorIdx + 1) % this.palette.length;
-        const angleIdx = (colorIdx + 2) % this.palette.length;
+        // Pick a "far away" color in the palette for border contrast.
+        const borderIdx = (colorIdx + (this.palette.length / 2)) % this.palette.length;
+        const angleIdx = (colorIdx + 1) % this.palette.length;
         
         return {
             lineWidth: 3,

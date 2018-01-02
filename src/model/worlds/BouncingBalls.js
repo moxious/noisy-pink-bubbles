@@ -27,6 +27,7 @@ export default class BouncingBalls extends World {
 
         const renderer = Physics.renderer('canvas', {
             el: canvasID,
+            meta: false,
         });
 
         const createdWorld = Physics(world => {

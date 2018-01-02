@@ -17,13 +17,17 @@ body {
 }
 
 .App canvas#viewport {
-  right: 0px;
-  bottom: -50px;
-  left: 0px;
-  top: 56px;
   width: 100% !important;
   height: 100% !important;
-/*  position: relative !important; */
+
+  position: relative !important;
+  /* max-width: 98% !important; */
+  max-height: 90% !important;
+
+  min-height: 500px;
+  min-width: 500px;
+
+  border: 1px solid black;
 }
 
 .App-logo {
