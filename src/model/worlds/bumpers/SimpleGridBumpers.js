@@ -1,12 +1,14 @@
 import Physics from 'physicsjs';
 import Bumpers from './Bumpers';
+import shapes from '../../shapes/';
 
 /**
  * A set of bumper objects within a world (always static)
  */
 export default class SimpleGridBumpers extends Bumpers {
-    constructor(component, renderer) {
+    constructor(component, renderer, mass=1) {
         super(component, renderer);
+        this.mass = mass;
         this.reposition(renderer);
     }
 
@@ -36,13 +38,15 @@ export default class SimpleGridBumpers extends Bumpers {
             const x = bumperCoords[i][0];
             const y = bumperCoords[i][1];
 
-            this.bumpers.push(Physics.body('rectangle', {
+            this.bumpers.push(Physics.body('convex-polygon', {
                 x,
                 y,
-                mass: -5,
-                vx: 0, vy: 0,
+                mass: this.mass,
+                vx: 0, 
+                vy: 0,
                 width: 30,
                 height: 30,
+                vertices: shapes.random(),
                 treatment: 'static',
                 styles: {
                     fillStyle: this.component.palette[this.component.palette.length - 1],

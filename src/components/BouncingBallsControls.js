@@ -3,6 +3,16 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Physics from 'physicsjs';
 
+import IconButton from 'material-ui/IconButton';
+import SlowMotion from 'material-ui/svg-icons/av/slow-motion-video';
+import VolumeMute from 'material-ui/svg-icons/av/volume-mute';
+import VolumeUp from 'material-ui/svg-icons/av/volume-up';
+import FastForward from 'material-ui/svg-icons/av/fast-forward';
+import RemoveCircle from 'material-ui/svg-icons/content/remove-circle-outline';
+import AddCircle from 'material-ui/svg-icons/content/add-circle-outline';
+import Pause from 'material-ui/svg-icons/av/pause';
+import PlayArrow from 'material-ui/svg-icons/av/play-arrow';
+
 // import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import { ToolbarGroup } from 'material-ui/Toolbar';
@@ -17,9 +27,7 @@ export default class BouncingBallsControls extends React.Component {
             chord: "C",
             key: "M",
             synth: "AM",
-            toggleLabel: 'Pause',
             paused: false,
-            muteLabel: 'Mute',
             muted: false,
         };
 
@@ -95,21 +103,21 @@ export default class BouncingBallsControls extends React.Component {
         const phys = this.state.app.world.getPhysics();
 
         if (phys.isPaused()) {
-            this.setState({ toggleLabel: 'Pause', paused: false });
+            this.setState({ paused: false });
             return phys.unpause();
         }
 
-        this.setState({ toggleLabel: 'Unpause', paused: true });
+        this.setState({ paused: true });
         return phys.pause();
     }
 
     toggleMute() {
         if (this.state.muted) {
-            this.setState({ muted: false, muteLabel: 'Mute' });
+            this.setState({ muted: false });
             this.state.app.conductor.mute(false);
         } else {
             this.state.app.conductor.mute(true);
-            this.setState({ muted: true, muteLabel: 'Unmute' });
+            this.setState({ muted: true });
         }
     }
 
@@ -155,14 +163,25 @@ export default class BouncingBallsControls extends React.Component {
         return (
             <ToolbarGroup>
             <ToolbarGroup>
-                <RaisedButton label={this.state.toggleLabel} onClick={(e) => this.togglePause(e)} />
-                {/* <RaisedButton disabled={this.state.paused} label='Downwarp' onClick={(e) => this.downwarp(e)} />
-                <RaisedButton disabled={this.state.paused} label='Upwarp' onClick={(e) => this.upwarp(e)} /> */}
-                <RaisedButton disabled={this.state.paused} label={this.state.muteLabel} onClick={(e) => this.toggleMute(e)} />
-                <RaisedButton disabled={this.state.paused} label='Excite' onClick={(e) => this.excite(0.3, 1)} />
-                <RaisedButton disabled={this.state.paused} label='Calm' onClick={(e) => this.excite(0.3, -1)} />
-                <RaisedButton label="+" onClick={(e) => this.addBody(1)} />
-                <RaisedButton label="-" onClick={(e) => this.addBody(-1)} />
+                <IconButton
+                    tooltip="Pause/Unpause"
+                    onClick={(e) => this.togglePause(e)}
+                >
+                    { this.state.paused ? <PlayArrow/> : <Pause/> }
+                </IconButton>
+
+                <IconButton 
+                    tooltip="Mute/Unmute" 
+                    disabled={this.state.paused} 
+                    onClick={(e) => this.toggleMute(e)}>
+                    { this.state.muted ? <VolumeUp/> : <VolumeMute/>}
+                </IconButton>
+
+                <IconButton disabled={this.state.paused} tooltip="Speed Up" onClick={(e) => this.excite(0.3, 1)}><FastForward/></IconButton>
+                <IconButton disabled={this.state.paused} tooltip="Slow Down" onClick={(e) => this.excite(0.3, -11)}><SlowMotion/></IconButton>                
+
+                <IconButton disabled={this.state.paused} tooltip="Add Ball" onClick={(e) => this.addBody(1)}><AddCircle/></IconButton>
+                <IconButton disabled={this.state.paused} tooltip="Remove Ball" onClick={(e) => this.addBody(-1)}><RemoveCircle/></IconButton>
             </ToolbarGroup>
             <ToolbarGroup>
                 <SelectField value={this.state.chord}

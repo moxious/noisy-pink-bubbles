@@ -80,7 +80,8 @@ export default class Conductor {
         const constructors = {
             // AM: Tone.AMSynth,
         };
-        console.log('Making synth', this.synth);
+        
+        // console.log('Making synth', this.synth);
 
         if (validTypes.indexOf(this.synth) > -1) {
             return new Tone.Synth({

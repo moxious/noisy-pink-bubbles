@@ -37,6 +37,7 @@ export default class BodySound {
             console.log('Cannot play non-tonal body ', this.body);
             return;
         } else if (this.conductor.muted) {
+            // console.log('muted, not playing');
             return;
         }
 
@@ -51,7 +52,7 @@ export default class BodySound {
                 // console.log('Too soon');
                 return;
             } else {
-                // console.log('Playing secondary ', this.tone, 'through', this.synth);
+                // console.log('Playing secondary ', this.sounds.tone, 'through', this.sounds.synth);
                 this.sounds.lastPlayed = now;
                 this.sounds.synth.triggerAttackRelease(this.sounds.tone, '32n');
             }

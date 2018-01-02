@@ -21,7 +21,7 @@ export default class World {
         this.palette = p;
 
         this.getPhysics().getBodies().forEach(body => {
-            const c = this.chooseColor();
+            const c = (body.treatment === 'static' ? this.staticColor() : this.chooseColor());
 
             if (body.styles.fillStyle && c !== body.styles.fillStyle) {
                 // Deep magic; force renderer to re-assign.  Just plugging in a new
@@ -35,28 +35,34 @@ export default class World {
         // this.getRenderer().reset(this.getPhysics().getBodies());
     }
 
+    staticColor() {
+        return this.palette[this.palette.length - 1];
+    }
+
     chooseColor() {
         return this.palette[Math.floor(Math.random() * this.palette.length)]
     }
 
-    makeBody(world, renderer) {
+    makeBody(world, renderer, opts = {}) {
         const neg = Math.random() > 0.5;
 
-        let body = Physics.body('circle', {
-            x: Math.random() * renderer.width,
-            y: 0,// Math.random() * renderer.height,
-            vx: Math.random() * 0.5 * (neg ? -1 : 1),
-            vy: Math.random() * 0.5 * (neg ? -1 : 1),
-            mass: 0.1,//Math.random() * 2,
-            radius: 20,
-            width: 30,
-            height: 30,
-            cof: 0.7,
-            label: 'body-' + (++this.bodyCounter),
-            restitution: 1,
-            // treatment: 'kinematic',
-            // treatment: Math.random() < 0.2 ? 'static' : 'dynamic',
-            styles: {
+        const numberDefault = (value, fallback) =>
+            isNaN(value) ? fallback : value;
+
+        let body = Physics.body(opts.shape || 'circle', {
+            x: numberDefault(opts.x, Math.random() * renderer.width),
+            y: numberDefault(opts.y, 0),
+            vx: numberDefault(opts.vx, (Math.random() * 0.5 * (neg ? -1 : 1))),
+            vy: numberDefault(opts.vy, (Math.random() * 0.5 * (neg ? -1 : 1))),
+            mass: opts.mass || 0.1, // cannot be zero.
+            radius: numberDefault(opts.radius, 20),
+            width: numberDefault(opts.width, 30),
+            height: numberDefault(opts.height, 30),
+            cof: numberDefault(opts.cof, 0.7),
+            label: opts.label || 'body-' + (++this.bodyCounter),
+            restitution: numberDefault(opts.restitution, 1),
+            treatment: opts.treatment || 'dynamic',
+            styles: opts.styles || {
                 fillStyle: this.chooseColor(),
                 angleIndicator: '#000000',
             }

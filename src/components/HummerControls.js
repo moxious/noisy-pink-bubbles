@@ -7,9 +7,6 @@ import Divider from 'material-ui/Divider';
 import Slider from 'material-ui/Slider';
 import SurroundSound from 'material-ui/svg-icons/av/surround-sound';
 import IconButton from 'material-ui/IconButton';
-
-
-// import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import { ToolbarGroup } from 'material-ui/Toolbar';
 
 export default class HummerControls extends React.Component {

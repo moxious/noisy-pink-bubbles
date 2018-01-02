@@ -18,6 +18,7 @@ export default class BouncingBalls extends World {
         super({ bodies, canvasID });
 
         const component = this;
+        let attractor = null;
 
         const renderer = Physics.renderer('canvas', {
             el: canvasID,
@@ -37,7 +38,7 @@ export default class BouncingBalls extends World {
             // constrain objects to these bounds
             var edgeBounce = Physics.behavior('edge-collision-detection', {
                 aabb: viewportBounds,
-                restitution: 1.05,
+                restitution: 1,
                 cof: 0.90,
             });
 
@@ -73,24 +74,16 @@ export default class BouncingBalls extends World {
             }));
 
             // add some fun interaction
-            const attractor = Physics.behavior('attractor', {
+            attractor = Physics.behavior('attractor', {
                 order: 0,
                 strength: .002,
             });
 
             world.on({
-                'interact:poke': function (pos) {
-                    // world.wakeUpAll();
-                    // attractor.position(pos);
-                    // world.add(attractor);
-                },
-                'interact:move': function (pos) {
-                    attractor.position(pos);
-                },
-                'interact:release': function () {
-                    world.wakeUpAll();
-                    world.remove(attractor);
-                },
+                'interact:poke': pos => this.poke(pos),
+                'interact:move': pos => this.move(pos),
+                'interact:release': pos => this.release(pos),
+                'interact:grab': pos => this.grab(pos),
             });
 
             // If extending a body and you want to handle its collision
@@ -122,7 +115,46 @@ export default class BouncingBalls extends World {
 
         this.renderer = renderer;
         this.world = createdWorld;
+        this.attractor = attractor;
         this.bumpers = new SimpleGridBumpers(this, this.renderer);
+    }
+
+    poke(pos) {
+        // this.getPhysics().wakeUpAll();
+        // this.attractor.position(pos);
+        // this.getPhysics().add(this.attractor);
+
+        if(pos.y <= 56) {
+            // TODO: remove this dirty hack once I can figure out why the canvas
+            // is eating all of the screen space.  Don't want to trigger event on
+            // toolbar click.
+            console.log('Dirty hack');
+            return;
+        }
+
+        const newBody = this.makeBody(this.getPhysics(), this.renderer, { 
+            x: pos.x,
+            y: pos.y,
+            vx: 0,
+            vy: 0.5,
+        });
+        this.getPhysics().add(newBody);
+        console.log('Poke ', pos);
+    }
+
+    move(pos) {
+        // console.log('Move ', pos);
+        this.attractor.position(pos);
+    }
+
+    release(pos) {
+        console.log('Release ', pos);
+        this.getPhysics().wakeUpAll();
+        this.getPhysics().remove(this.attractor);
+    }
+
+    grab(data) {
+        // console.log('Grab: ', data);
     }
 
     collisionsDetected(data) {
