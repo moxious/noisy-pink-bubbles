@@ -1,6 +1,10 @@
 import Physics from 'physicsjs';
 import choosePalette from './Palette';
 import BodySound from '../sound/BodySound';
+import Emoji from './Emoji';
+import _ from 'lodash';
+
+const NON_EMOJI_PERCENT = 0.9;
 
 /**
  * A world is an abstract physics container full of bodies and interactions.
@@ -28,12 +32,25 @@ export default class World {
 
         this.getPhysics().getBodies().forEach(body => {
             // Deep magic; force renderer to re-assign.
+            // When using the PIXI renderer, you must remove the
+            // view sprite from the stage.  When using canvas
+            // renderer, it's enough to mark view undefined.
+            if (this.getRenderer().stage) {
+                this.getRenderer().stage.removeChild(body.view);
+            } 
             body.view = undefined;
 
             if (body.treatment === 'static') {
                 body.styles = this.styleBumper();
             } else {
-                body.styles = this.styleBubble();
+                if (Math.random() < NON_EMOJI_PERCENT) {
+                    body.styles = this.styleBubble();
+                } else {
+                    body.view = this.getRenderer().createDisplay('sprite', {
+                        texture: Emoji.random(),
+                        anchor: { x: 0.5, y: 0.5 },
+                    });
+                }
             }
         });
 
@@ -60,7 +77,7 @@ export default class World {
 
     styleBumper() {
         return {
-            lineWidth: 3,
+            lineWidth: 2,
             strokeStyle: '#000000',
             fillStyle: this.palette[this.palette.length - 1],
         }
@@ -73,7 +90,7 @@ export default class World {
         const angleIdx = (colorIdx + 1) % this.palette.length;
         
         return {
-            lineWidth: 3,
+            lineWidth: 2,
             strokeStyle: this.palette[borderIdx],
             fillStyle: this.palette[colorIdx],
             angleIndictor: this.palette[angleIdx],
@@ -90,7 +107,17 @@ export default class World {
         const numberDefault = (value, fallback) =>
             isNaN(value) ? fallback : value;
 
-        let body = Physics.body(opts.shape || 'circle', {
+        const style = {};
+        if (Math.random() < NON_EMOJI_PERCENT) {
+            style.styles = opts.styles || this.styleBubble();
+        } else {
+            style.view = renderer.createDisplay('sprite', {
+                texture: Emoji.random(),
+                anchor: { x: 0.5, y: 0.5 },
+            });
+        }
+
+        let body = Physics.body(opts.shape || 'circle', _.merge({
             x: numberDefault(opts.x, Math.random() * renderer.width),
             y: numberDefault(opts.y, 0),
             vx: numberDefault(opts.vx, (Math.random() * 0.5 * (neg ? -1 : 1))),
@@ -103,8 +130,7 @@ export default class World {
             label: opts.label || 'body-' + (++this.bodyCounter),
             restitution: numberDefault(opts.restitution, 1),
             treatment: opts.treatment || 'dynamic',
-            styles: opts.styles || this.styleBubble(),
-        });
+        }, style));
 
         return body;
     }

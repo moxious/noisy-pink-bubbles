@@ -31,5 +31,5 @@ export default () => {
     }
 
     // console.log('Palette ', randScheme, p);
-    return p.map(color => `#${color}`);
+    return p.map(color => `0x${color}`);
 }

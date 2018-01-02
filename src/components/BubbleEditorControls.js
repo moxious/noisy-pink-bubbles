@@ -5,8 +5,9 @@ import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import EditMode from 'material-ui/svg-icons/editor/mode-edit';
-
+import Toggle from 'material-ui/Toggle';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import { ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
 
 const VECTOR_UP = { x: 0, y: -0.5 };
 const VECTOR_DOWN = { x: 0, y: 0.5 };
@@ -24,6 +25,7 @@ export default class BubbleEditorControls extends React.Component {
             openMenu: false,
             addMode: 'bubble',
             initialVector: VECTOR_DOWN,
+            emojis: false,
         };
     }
 
@@ -45,6 +47,10 @@ export default class BubbleEditorControls extends React.Component {
         this.state.app.world.setNewBodyVector(vector);
     }
 
+    // toggleEmoji(event, isChecked) {
+    //     this.setState({ emojis: isChecked });
+    // }
+
     clear() {
         console.log('Clear All');
         this.state.app.world.removeAll();
@@ -53,6 +59,7 @@ export default class BubbleEditorControls extends React.Component {
     render() {
         return (
             <div className="BubbleEditorControls">
+                <ToolbarGroup>
                 <IconMenu iconButtonElement={<IconButton tooltip={this.tooltip}><EditMode/></IconButton>}
                     open={this.state.openMenu}
                     onRequestChange={this.handleOnRequestChange}>
@@ -98,10 +105,18 @@ export default class BubbleEditorControls extends React.Component {
                         </RadioButtonGroup>
                     </MenuItem>
 
+                    {/* <Divider/>
+                    <MenuItem>
+                        <Toggle onToggle={(e,c) => this.toggleEmoji(e,c)}
+                            toggled={this.state.emojis}
+                            label="Emojis"/>                    
+                    </MenuItem> */}
+
                     <MenuItem primaryText="Clear Canvas"
                         onClick={(e) => this.clear(e)}
                     />
                 </IconMenu>
+                </ToolbarGroup>
             </div>
         );
     }

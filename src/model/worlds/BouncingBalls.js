@@ -3,8 +3,6 @@ import Physics from 'physicsjs';
 import SimpleGridBumpers from './bumpers/SimpleGridBumpers';
 import BodySound from '../../sound/BodySound';
 
-// import PIXI from 'physicsjs/dist/renderers/pixi-renderer';
-
 // Maximum velocity in any given direction x or y.
 // Bubbles won't be allowed to move faster than this, or animation goes haywire
 // as speed exceed refresh rate.
@@ -25,21 +23,37 @@ export default class BouncingBalls extends World {
         const component = this;
         let attractor = null;
 
-        const renderer = Physics.renderer('canvas', {
+        const renderer = Physics.renderer('pixi', {
             el: canvasID,
-            meta: false,
+            // meta: true,
         });
 
+        console.log('Renderer', renderer);
         const createdWorld = Physics(world => {
-            const el = document.getElementById(canvasID);
+            // const el = document.getElementById(canvasID);
             // let viewportBounds = Physics.aabb(0, 0, window.innerWidth, window.innerHeight);
-            let viewportBounds = Physics.aabb(0, 0, el.width, el.height);
+            // let viewportBounds = Physics.aabb(0, 0, el.width, el.height);
+            let viewportBounds = Physics.aabb(0, 0, renderer.width, renderer.height);
 
             // add the renderer
             world.add(renderer);
 
             // render on each step
-            world.on('step', () => world.render());
+            world.on('step', () => {
+                /* Circular mask is necessary if sprites aren't circles.
+                world.getBodies()
+                    .filter(body => body.treatment === 'dynamic' && body.view)
+                    .map(body => {
+                        const mask = new window.PIXI.Graphics();
+                        mask.beginFill(0xff0000);
+                        mask.lineStyle(0);
+                        mask.drawCircle(body.state.pos.x, body.state.pos.y, 20);
+                        mask.endFill();                        
+                        body.view.mask = mask;
+                    });
+                */
+                world.render();
+            });
 
             // Add sounds to everything new that gets added.
             world.on('add:body', data => component.assignBodySound(data.body));
@@ -143,7 +157,7 @@ export default class BouncingBalls extends World {
         }
 
         const props = { x: pos.x, y: pos.y };
-        console.log('Poke in addMode ', this.addMode);
+        console.log('Poke ', pos, ' in addMode ', this.addMode);
         if (this.addMode === 'bumper') {
             props.vx = 0;
             props.vy = 0;
@@ -162,7 +176,6 @@ export default class BouncingBalls extends World {
 
         const newBody = this.makeBody(this.getPhysics(), this.renderer, props);
         this.getPhysics().add(newBody);
-        console.log('Poke ', pos);
     }
 
     assignBodySound(body) {
@@ -179,7 +192,7 @@ export default class BouncingBalls extends World {
     }
 
     release(pos) {
-        // console.log('Release ', pos);
+        console.log('Release ', pos);
         // this.getPhysics().wakeUpAll();
         this.getPhysics().remove(this.attractor);
     }

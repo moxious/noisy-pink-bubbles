@@ -16,7 +16,7 @@ body {
   position: absolute;
 }
 
-.App canvas#viewport {
+.App canvas#viewport, .App div#viewport {
   width: 100% !important;
   height: 100% !important;
 

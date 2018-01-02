@@ -30,6 +30,10 @@ class App extends React.Component {
     this.state.hummer.start();
     this.state.conductor.coordinate(this.state.world);
     this.state.world.getRenderer().resize();
+
+    window.addEventListener('dblclick', args => {
+      console.log('double click ', args);
+    })
   }
 
   joyrideCallback(e) {
@@ -48,7 +52,8 @@ class App extends React.Component {
           callback={(e) => this.joyrideCallback(e)}
         />
         <Toolbar app={this.state} />
-        <canvas id="viewport" width="1000" height="500" />
+        <div id="viewport">
+        </div>
       </div>
     );
   }
