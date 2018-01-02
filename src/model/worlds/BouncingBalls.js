@@ -122,12 +122,22 @@ export default class BouncingBalls extends World {
             return;
         }
 
-        const newBody = this.makeBody(this.getPhysics(), this.renderer, { 
-            x: pos.x,
-            y: pos.y,
-            vx: 0,
-            vy: 0.5,
-        });
+        const props = { x: pos.x, y: pos.y };
+        console.log('Poke in addMode ', this.addMode);
+        if (this.addMode === 'bumper') {
+            props.vx = 0; 
+            props.vy = 0;
+            props.shape = 'rectangle';
+            props.width = 40;
+            props.height = 40;
+            props.treatment = 'static';
+        } else {
+            props.vx = this.initialVector.x;
+            props.vy = this.initialVector.y;
+            props.treatment = 'dynamic';
+        }
+
+        const newBody = this.makeBody(this.getPhysics(), this.renderer, props);
         this.getPhysics().add(newBody);
         console.log('Poke ', pos);
     }

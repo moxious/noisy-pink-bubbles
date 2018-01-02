@@ -32,6 +32,11 @@ class App extends React.Component {
       body.sounds = new BodySound(this.state.conductor, body);
     });
 
+    // Tonify any new bodies that get added later.
+    this.state.world.getPhysics().on('add:body', data => {      
+      data.body.sounds = new BodySound(this.state.conductor, data.body);
+    });
+
     this.state.conductor.coordinate(this.state.world);
 
     this.state.world.getRenderer().resize();

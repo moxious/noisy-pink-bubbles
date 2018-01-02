@@ -18,7 +18,7 @@ export default class NPBToolbar extends React.Component {
         return (
             <Toolbar className="NPBToolbar">
                 <HummerControls app={this.state.app}/>
-                {/* <BubbleEditorControls app={this.state.app}/> */}
+                <BubbleEditorControls app={this.state.app}/>
                 <BouncingBallsControls app={this.state.app}/>
             </Toolbar>
         );

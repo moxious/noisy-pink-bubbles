@@ -10,7 +10,8 @@ export default class World {
     constructor(props) {
         this.palette = choosePalette();
         this.bodyCounter = 0;
-
+        this.addMode = 'bubble';
+        this.initialVector = { x: 0, y: 0.5 };
         setInterval(() => this.repalette(), 5000);
     }
 
@@ -33,6 +34,20 @@ export default class World {
         });
 
         // this.getRenderer().reset(this.getPhysics().getBodies());
+    }
+
+    setNewBodyVector(vector) {
+        if (!vector || isNaN(vector.x) || isNaN(vector.y)) {
+            throw new Error('Bad initial vector', vector);
+        }
+
+        this.initialVector = vector;
+    }
+
+    setAddMode(mode) {
+        this.addMode = mode;
+        console.log('Modified addMOde to ', mode);
+        return this.addMode;
     }
 
     staticColor() {
@@ -85,12 +100,22 @@ export default class World {
         this.getPhysics().add(body);
     }
 
+    removeAll() {
+        const bodies = this.getPhysics().getBodies();
+        this.getPhysics().remove(bodies);
+    }
+
     removeBody() {
         let candidate = null;
         const bodies = this.getPhysics().getBodies();
 
         for (let i=0; i<bodies.length; i++) {
             if (this.bumpers && this.bumpers.isBumper(bodies[i])) {
+                continue;
+            }
+
+            if (bodies[i].treatment === 'static') {
+                // User-added bumper, don't remove.
                 continue;
             }
 
