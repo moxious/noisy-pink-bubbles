@@ -5,6 +5,7 @@
   "homepage": "https://moxious.github.io/noisy-pink-bubbles",
   "dependencies": {
     "bluebird": "^3.5.1",
+    "google-palette": "^1.0.0",
     "lodash": "^4.17.4",
     "material-ui": "^0.20.0",
     "physicsjs": "^0.7.0",

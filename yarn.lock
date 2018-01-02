@@ -2848,6 +2848,10 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
+google-palette@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/google-palette/-/google-palette-1.0.0.tgz#9da061ee881c79688b25ccacc36bf846deecc4c3"
+
 got@^5.0.0:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/got/-/got-5.7.1.tgz#5f81635a61e4a6589f180569ea4e381680a51f35"
