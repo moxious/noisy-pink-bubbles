@@ -5,8 +5,6 @@ import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import EditMode from 'material-ui/svg-icons/editor/mode-edit';
-import DeleteForever from 'material-ui/svg-icons/action/delete-forever';
-import { ToolbarGroup } from 'material-ui/Toolbar';
 
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 

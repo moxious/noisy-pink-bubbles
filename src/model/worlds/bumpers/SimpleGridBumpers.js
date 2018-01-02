@@ -48,6 +48,8 @@ export default class SimpleGridBumpers extends Bumpers {
                 height: 30,
                 vertices: shapes.random(),
                 treatment: 'static',
+                restitution: 1,
+                cof: 1,
                 styles: this.component.styleBumper(),
             }));
         }

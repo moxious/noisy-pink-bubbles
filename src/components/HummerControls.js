@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
@@ -10,8 +9,6 @@ import SurroundSound from 'material-ui/svg-icons/av/surround-sound';
 import IconButton from 'material-ui/IconButton';
 import VolumeMute from 'material-ui/svg-icons/av/volume-mute';
 import VolumeUp from 'material-ui/svg-icons/av/volume-up';
-
-import { ToolbarGroup } from 'material-ui/Toolbar';
 
 import './HummerControls.css';
 

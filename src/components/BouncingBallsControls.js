@@ -1,7 +1,6 @@
 import * as React from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import Physics from 'physicsjs';
 
 import IconButton from 'material-ui/IconButton';
 import SlowMotion from 'material-ui/svg-icons/av/slow-motion-video';
@@ -14,7 +13,6 @@ import Pause from 'material-ui/svg-icons/av/pause';
 import PlayArrow from 'material-ui/svg-icons/av/play-arrow';
 
 // import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
 import { ToolbarGroup } from 'material-ui/Toolbar';
 
 export default class BouncingBallsControls extends React.Component {

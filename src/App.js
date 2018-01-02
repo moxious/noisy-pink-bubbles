@@ -4,7 +4,6 @@ import './App.css';
 import Toolbar from './components/NPBToolbar';
 import BouncingBalls from './model/worlds/BouncingBalls';
 import Conductor from './sound/Conductor';
-import BodySound from './sound/BodySound';
 import Hummer from './sound/Hummer';
 
 import Joyride from 'react-joyride';
