@@ -163,7 +163,7 @@ export default class BouncingBallsControls extends React.Component {
         return (
             <ToolbarGroup>
             <ToolbarGroup>
-                <IconButton
+                <IconButton id='pauseButton'
                     tooltip="Pause/Unpause"
                     onClick={(e) => this.togglePause(e)}
                 >
@@ -184,7 +184,7 @@ export default class BouncingBallsControls extends React.Component {
                 <IconButton disabled={this.state.paused} tooltip="Remove Ball" onClick={(e) => this.addBody(-1)}><RemoveCircle/></IconButton>
             </ToolbarGroup>
             <ToolbarGroup>
-                <SelectField value={this.state.chord}
+                <SelectField value={this.state.chord} id='tonicSelector'
                     onChange={(e, i, v) => this.changeChord(e, i, v)}>
                     <MenuItem value='A' primaryText='A'/>
                     <MenuItem value='Bb' primaryText='A#/Bb'/>
@@ -199,14 +199,14 @@ export default class BouncingBallsControls extends React.Component {
                     <MenuItem value='G' primaryText='G'/>
                     <MenuItem value='Ab' primaryText='G#/Ab'/>
                 </SelectField>
-                <SelectField value={this.state.key}
+                <SelectField value={this.state.key} id='keySelector'
                     onChange={(e, i, v) => this.changeKey(e, i, v)}>
                     <MenuItem value="M" primaryText="Major"/>
                     <MenuItem value="m" primaryText="Minor"/>
                     <MenuItem value="M7" primaryText="Major7"/>
                     <MenuItem value="m7" primaryText="Minor7"/>
                 </SelectField>
-                <SelectField value={this.state.synth}
+                <SelectField value={this.state.synth} id='synthSelector'
                     onChange={(e, i, v) => this.changeSynth(e, i, v)}>
                     <MenuItem value='AM' primaryText='Synth: Basic'/>
                     <MenuItem value='pwm' primaryText='Synth: pwm'/>

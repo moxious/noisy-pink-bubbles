@@ -54,7 +54,7 @@ export default class BubbleEditorControls extends React.Component {
 
     render() {
         return (
-            // <ToolbarGroup>
+            <div className="BubbleEditorControls">
                 <IconMenu iconButtonElement={<IconButton tooltip={this.tooltip}><EditMode/></IconButton>}
                     open={this.state.openMenu}
                     onRequestChange={this.handleOnRequestChange}>
@@ -104,7 +104,7 @@ export default class BubbleEditorControls extends React.Component {
                         onClick={(e) => this.clear(e)}
                     />
                 </IconMenu>
-            // </ToolbarGroup>
+            </div>
         );
     }
 }
