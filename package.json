@@ -12,6 +12,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-flexbox-grid": "^2.0.0",
+    "react-joyride": "^1.11.1",
     "react-keypress": "^0.1.5",
     "react-scripts": "1.0.17",
     "tonal": "^1.1.0",

@@ -6,7 +6,9 @@ import BouncingBalls from './model/worlds/BouncingBalls';
 import Conductor from './sound/Conductor';
 import BodySound from './sound/BodySound';
 import Hummer from './sound/Hummer';
-// const logo = require('./logo.svg');
+
+import Joyride from 'react-joyride';
+import steps from './joyride-steps';
 
 class App extends React.Component {
   constructor(props) {
@@ -23,7 +25,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.state.world = new BouncingBalls({ });
+    this.state.world = new BouncingBalls({});
     this.state.hummer = new Hummer(this.state.conductor);
 
     this.state.hummer.start();
@@ -33,7 +35,7 @@ class App extends React.Component {
     });
 
     // Tonify any new bodies that get added later.
-    this.state.world.getPhysics().on('add:body', data => {      
+    this.state.world.getPhysics().on('add:body', data => {
       data.body.sounds = new BodySound(this.state.conductor, data.body);
     });
 
@@ -42,11 +44,23 @@ class App extends React.Component {
     this.state.world.getRenderer().resize();
   }
 
+  joyrideCallback(e) {
+    console.log('Joyride: ', e);
+  }
+
   render() {
     return (
       <div className="App">
+        <Joyride
+          ref="joyride"
+          steps={steps}
+          run={true} // or some other boolean for when you want to start it
+          autoStart={false}
+          debug={true}
+          callback={(e) => this.joyrideCallback(e)}
+        />
         <Toolbar app={this.state} />
-        <canvas id="viewport" width="1000" height="500"/>
+        <canvas id="viewport" width="1000" height="500" />
       </div>
     );
   }
