@@ -4,7 +4,7 @@ import BodySound from '../sound/BodySound';
 import Emoji from './Emoji';
 import _ from 'lodash';
 
-const NON_EMOJI_PERCENT = 0.9;
+const NON_EMOJI_PERCENT = 1;
 
 /**
  * A world is an abstract physics container full of bodies and interactions.
