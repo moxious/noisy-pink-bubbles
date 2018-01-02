@@ -2,6 +2,8 @@ import World from '../World';
 import Physics from 'physicsjs';
 import shapes from '../shapes/';
 import SimpleGridBumpers from './bumpers/SimpleGridBumpers';
+import BodySound from '../../sound/BodySound';
+
 // import PIXI from 'physicsjs/dist/renderers/pixi-renderer';
 
 const SPEED_LIMIT = 0.5;
@@ -13,9 +15,10 @@ const SPEED_LIMIT = 0.5;
 export default class BouncingBalls extends World {
     constructor({
         bodies = 7,
+        conductor,
         canvasID = 'viewport',
     }) {
-        super({ bodies, canvasID });
+        super({ bodies, canvasID, conductor });
 
         const component = this;
         let attractor = null;
@@ -34,6 +37,9 @@ export default class BouncingBalls extends World {
 
             // render on each step
             world.on('step', () => world.render());
+
+            // Add sounds to everything new that gets added.
+            world.on('add:body', data => component.assignBodySound(data.body));
 
             // constrain objects to these bounds
             var edgeBounce = Physics.behavior('edge-collision-detection', {
@@ -131,15 +137,26 @@ export default class BouncingBalls extends World {
             props.width = 40;
             props.height = 40;
             props.treatment = 'static';
+            props.style = this.styleBumper();
+            console.log('Bumper style ', props.style);
         } else {
             props.vx = this.initialVector.x;
             props.vy = this.initialVector.y;
             props.treatment = 'dynamic';
+            props.style = this.styleBubble();
         }
 
         const newBody = this.makeBody(this.getPhysics(), this.renderer, props);
         this.getPhysics().add(newBody);
         console.log('Poke ', pos);
+    }
+
+    assignBodySound(body) {
+        if (body.treatment === 'dynamic') {
+            body.sounds = new BodySound(this.conductor, body);
+        }
+
+        return body;
     }
 
     move(pos) {

@@ -25,22 +25,11 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.state.world = new BouncingBalls({});
+    this.state.world = new BouncingBalls({ conductor: this.state.conductor });
     this.state.hummer = new Hummer(this.state.conductor);
 
     this.state.hummer.start();
-
-    this.state.world.getPhysics().getBodies().forEach(body => {
-      body.sounds = new BodySound(this.state.conductor, body);
-    });
-
-    // Tonify any new bodies that get added later.
-    this.state.world.getPhysics().on('add:body', data => {
-      data.body.sounds = new BodySound(this.state.conductor, data.body);
-    });
-
     this.state.conductor.coordinate(this.state.world);
-
     this.state.world.getRenderer().resize();
   }
 

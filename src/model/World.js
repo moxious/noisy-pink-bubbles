@@ -8,6 +8,11 @@ import BodySound from '../sound/BodySound';
  */
 export default class World {
     constructor(props) {
+        if (!props || !props.conductor) {
+            throw new Error('All worlds must be created with a conductor');
+        }
+
+        this.conductor = props.conductor;
         this.palette = choosePalette();
         this.bodyCounter = 0;
         this.addMode = 'bubble';
@@ -54,6 +59,27 @@ export default class World {
         return this.palette[this.palette.length - 1];
     }
 
+    styleBumper() {
+        return {
+            lineWidth: 3,
+            strokeStyle: '#000000',
+            fillStyle: this.palette[this.palette.length - 1],
+        }
+    }
+
+    styleBubble() {
+        const colorIdx = Math.floor(Math.random() * this.palette.length);
+        const borderIdx = (colorIdx + 1) % this.palette.length;
+        const angleIdx = (colorIdx + 2) % this.palette.length;
+        
+        return {
+            lineWidth: 3,
+            strokeStyle: this.palette[borderIdx],
+            fillStyle: this.palette[colorIdx],
+            angleIndictor: this.palette[angleIdx],
+        };
+    }
+
     chooseColor() {
         return this.palette[Math.floor(Math.random() * this.palette.length)]
     }
@@ -77,10 +103,7 @@ export default class World {
             label: opts.label || 'body-' + (++this.bodyCounter),
             restitution: numberDefault(opts.restitution, 1),
             treatment: opts.treatment || 'dynamic',
-            styles: opts.styles || {
-                fillStyle: this.chooseColor(),
-                angleIndicator: '#000000',
-            }
+            styles: opts.styles || this.styleBubble(),
         });
 
         return body;
