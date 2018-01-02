@@ -27,14 +27,13 @@ export default class World {
         this.palette = p;
 
         this.getPhysics().getBodies().forEach(body => {
-            const c = (body.treatment === 'static' ? this.staticColor() : this.chooseColor());
+            // Deep magic; force renderer to re-assign.
+            body.view = undefined;
 
-            if (body.styles.fillStyle && c !== body.styles.fillStyle) {
-                // Deep magic; force renderer to re-assign.  Just plugging in a new
-                // color doesn't work because the view is dynamically generated PNG.
-                body.view = undefined;
-                // console.log('WAS: ', body.styles.fillStyle, 'NOW', c);
-                body.styles.fillStyle = c;
+            if (body.treatment === 'static') {
+                body.styles = this.styleBumper();
+            } else {
+                body.styles = this.styleBubble();
             }
         });
 
