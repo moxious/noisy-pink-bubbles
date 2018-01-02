@@ -83,19 +83,29 @@ export default class BouncingBallsControls extends React.Component {
     }
 
     exciteBody(body, factor, direction=1) {
+        if ((Math.abs(body.state.vel.x) + Math.abs(body.state.vel.y)) <= 0.01 && direction > 0) {
+            // Not moving at all, add some action.
+            // console.log('Exciting the torpid; ', body.state.vel.x, body.state.vel.y);
+            return body.state.vel.set(Math.random(), Math.random());
+        }
+
         const x = (body.state.vel.x * factor * direction);
         const y = (body.state.vel.y * factor * direction);
 
-        const scaledVec = Physics.vector((x === 0 ? 0.1 : x), (y === 0 ? 0.1 : y));
+        const newX = body.state.vel.x + x;
+        const newY = body.state.vel.y + y;
 
         // console.log('Velocity: ', 
-        //     [body.state.vel.x, body.state.vel.y],
-        //     [scaledVec.x, scaledVec.y]);
-        return body.accelerate(scaledVec);    
+        //     body.state.vel.x, '=>', newX,
+        //     body.state.vel.y, '=>', newY);
+
+        body.state.vel.set(newX, newY);
     }
 
     excite(factor, direction=1) {
-        return this.state.app.world.getPhysics().getBodies().map(body => this.exciteBody(body, factor, direction));
+        return this.state.app.world.getPhysics().getBodies()
+            .filter(body => body.treatment === 'dynamic')
+            .map(body => this.exciteBody(body, factor, direction));
     }
 
     togglePause() {

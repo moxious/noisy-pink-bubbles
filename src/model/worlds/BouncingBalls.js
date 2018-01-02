@@ -124,7 +124,7 @@ export default class BouncingBalls extends World {
             // TODO: remove this dirty hack once I can figure out why the canvas
             // is eating all of the screen space.  Don't want to trigger event on
             // toolbar click.
-            console.log('Dirty hack');
+            // console.log('Dirty hack');
             return;
         }
 
@@ -165,8 +165,8 @@ export default class BouncingBalls extends World {
     }
 
     release(pos) {
-        console.log('Release ', pos);
-        this.getPhysics().wakeUpAll();
+        // console.log('Release ', pos);
+        // this.getPhysics().wakeUpAll();
         this.getPhysics().remove(this.attractor);
     }
 
