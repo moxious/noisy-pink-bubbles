@@ -24,11 +24,19 @@ export default class HummerControls extends React.Component {
             started: true,
             tempoLabel: `Tempo: ${props.app.conductor.getTempo()} BPM`,
         };
+
+        props.app.conductor.register(this);
     }
 
-    adjustTempo(factor) {
-        const tempo = this.state.app.conductor.getTempo() * factor;
-        this.state.app.conductor.setTempo(Math.floor(tempo));
+    /** Notify us of conductor changes so we can update state. */
+    onConductorChange(property, value, conductor) {
+        if (property === 'tempo') {
+            this.setState({
+                tempo: value,
+                tempoLabel: `Tempo: ${this.state.app.conductor.getTempo()} BPM`,
+            });
+            // console.log('State sync to conductor tempo ', value);
+        }
     }
 
     arpeggiate() { 
@@ -46,13 +54,15 @@ export default class HummerControls extends React.Component {
     }
 
     handleOpenMenu() {
-        console.log('Setting menu');
+        // console.log('Setting menu');
         this.setState({
             openMenu: true,
         });
     }
 
     handleTempoSlider = (event, value) => {
+        // console.log('Tempo slider: ', value, 'against present ', this.state.tempo,
+        //     'and conductor', this.state.app.conductor.getTempo());
         this.setState({ 
             tempo: value,
             tempoLabel: `Tempo: ${this.state.app.conductor.getTempo()} BPM`,
