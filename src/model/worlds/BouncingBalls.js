@@ -1,12 +1,14 @@
 import World from '../World';
 import Physics from 'physicsjs';
-import shapes from '../shapes/';
 import SimpleGridBumpers from './bumpers/SimpleGridBumpers';
 import BodySound from '../../sound/BodySound';
 
 // import PIXI from 'physicsjs/dist/renderers/pixi-renderer';
 
-const SPEED_LIMIT = 0.5;
+// Maximum velocity in any given direction x or y.
+// Bubbles won't be allowed to move faster than this, or animation goes haywire
+// as speed exceed refresh rate.
+const SPEED_LIMIT = 2;
 
 /**
  * Bouncing Balls is a world populated by balls that collide with one another and produce
@@ -45,7 +47,7 @@ export default class BouncingBalls extends World {
             var edgeBounce = Physics.behavior('edge-collision-detection', {
                 aabb: viewportBounds,
                 restitution: 1,
-                cof: 0.90,
+                cof: 1,
             });
 
             // resize events
@@ -101,10 +103,21 @@ export default class BouncingBalls extends World {
 
             // subscribe to ticker to advance the simulation
             Physics.util.ticker.on((time) => {
-                // const vectors = world.getBodies().map(body => Math.abs(body.state.vel.x) + Math.abs(body.state.vel.y)).sort().reverse();
-                // const fastest = vectors[0];
-                // const total = vectors.reduce((a, b) => a + b, 0);
-                // console.log('Fastest vector: ', fastest, 'total', total);
+                world.getBodies()
+                    // For any body moving faster than the max in X or Y...
+                    .filter(body => (
+                        Math.abs(body.state.vel.x) > SPEED_LIMIT ||
+                        Math.abs(body.state.vel.y) > SPEED_LIMIT))
+                    .map(body => {
+                        // console.log('Speed limiting ', body.uid);
+                        const absX = Math.min(Math.abs(body.state.vel.x), SPEED_LIMIT);
+                        const absY = Math.min(Math.abs(body.state.vel.y), SPEED_LIMIT);
+
+                        // Set its new velocity to the minimum of either its vel or the max.
+                        return body.state.vel.set(body.state.vel.x > 0 ? absX : -absX,
+                            body.state.vel.y > 0 ? absY : -absY);
+                    });
+                
                 world.step(time);
             });
         });
@@ -120,7 +133,7 @@ export default class BouncingBalls extends World {
         // this.attractor.position(pos);
         // this.getPhysics().add(this.attractor);
 
-        if(pos.y <= 56) {
+        if (pos.y <= 56) {
             // TODO: remove this dirty hack once I can figure out why the canvas
             // is eating all of the screen space.  Don't want to trigger event on
             // toolbar click.
@@ -131,7 +144,7 @@ export default class BouncingBalls extends World {
         const props = { x: pos.x, y: pos.y };
         console.log('Poke in addMode ', this.addMode);
         if (this.addMode === 'bumper') {
-            props.vx = 0; 
+            props.vx = 0;
             props.vy = 0;
             props.shape = 'rectangle';
             props.width = 40;
