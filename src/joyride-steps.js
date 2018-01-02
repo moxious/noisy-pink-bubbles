@@ -24,4 +24,4 @@ export default [
     //     name: 'my-first-step',
     //     parent: 'MyComponentName'
     //   },        
-]
+];
