@@ -81,7 +81,7 @@ export default class BouncingBalls extends World {
                     }
 
                     // as of 0.7.0 the renderer will auto resize... so we just take the values from the renderer
-                    viewportBounds = Physics.aabb(0, 0, renderer.width, renderer.height);
+                    viewportBounds = Physics.aabb(renderer.width, renderer.height);
 
                     // update the boundaries
                     edgeBounce.setAABB(viewportBounds);

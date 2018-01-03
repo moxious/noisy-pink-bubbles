@@ -3,6 +3,7 @@ import * as Tonal from 'tonal';
 import * as Tone from 'tone';
 import BodySound from './BodySound';
 import sampler from './SampleSynth';
+import ChordProgression from './ChordProgression';
 
 const DEFAULT_ENVELOPE = {
     attack: 0.02,
@@ -23,6 +24,7 @@ export default class Conductor {
         this.muted = props.muted || false;
         this.tones = Tonal.Chord.notes(this.getTonalChord());
         this.listeners = [];
+        this.progression = ChordProgression.in(this.tonic, this.key);
     }
 
     /**
@@ -104,18 +106,6 @@ export default class Conductor {
         return new Tone.Synth().toMaster();
     }
 
-    setChord(chord) {
-        if (!chord) {
-            console.error('Bad conductor chord', chord);
-            return;
-        }
-        this.tonic = chord;
-        this.notify('tonic');
-        this.tones = Tonal.Chord.notes(this.getTonalChord());
-        console.log('CHORD: ', this.tones, ' for ', this.getTonalChord());
-        return this.tones;
-    }
-
     setTones(tones) {
         this.tones = tones;
         this.notify('tones');
@@ -142,8 +132,14 @@ export default class Conductor {
     getTonic() { return this.tonic; }
     getKey() { return this.key; }
 
-    setTonic(tonic) { 
+    setTonic(tonic) {
+        if (!tonic) {
+            throw new Error('Bad conductor tonic');
+        } else if (tonic === this.tonic) { return this.tonic; }
+
         this.tonic = tonic;
+        this.tones = Tonal.Chord.notes(this.getTonalChord());
+        this.progression = ChordProgression.in(this.tonic, this.key);
         this.notify('tonic');
         return this.getTonic(); 
     }
@@ -152,11 +148,12 @@ export default class Conductor {
         if (!key) {
             console.error('Bad conductor key', key);
             return;
-        }
+        } else if(key === this.key) { return this.key }
 
         this.key = key;
         this.notify('key');
         this.tones = Tonal.Chord.notes(this.getTonalChord());
+        this.progression = ChordProgression.in(this.tonic, this.key);
         console.log('KEY: ', this.tones, ' for ', this.getTonalChord());
         return this.getKey(); 
     }

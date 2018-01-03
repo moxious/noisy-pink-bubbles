@@ -13,10 +13,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    const conductor = new Conductor();
+
     this.state = {
       world: null,
-      hummer: null,
-      conductor: new Conductor(),
+      hummer: new Hummer(conductor),
+      conductor,
     };
   }
 
@@ -25,9 +27,10 @@ class App extends React.Component {
 
   componentDidMount() {
     this.state.world = new BouncingBalls({ conductor: this.state.conductor });
-    this.state.hummer = new Hummer(this.state.conductor);
 
-    this.state.hummer.start();
+    // Don't start by default.
+    // this.state.hummer.start();
+
     this.state.conductor.coordinate(this.state.world);
     this.state.world.getRenderer().resize();
 

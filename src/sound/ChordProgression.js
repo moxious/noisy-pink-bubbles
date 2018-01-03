@@ -14,6 +14,18 @@ export default class ChordProgression {
         return new ChordProgression([chords[0], chords[5], chords[6]]);
     }
 
+    static in(tonic, key) {
+        if (key === 'M') {
+            return ChordProgression.I_IV_V(tonic, key);
+        }
+
+        return ChordProgression.i_VI_VII(tonic, key);
+    }
+
+    /**
+     * Create a new chord progression with a sequence of chords.
+     * @param {*} chords e.g. ['C major', 'G major', 'A minor']
+     */
     constructor(chords) {
         this.chords = chords;
         this.toneSets = this.chords.map(chord => Tonal.Chord.notes(chord));        
@@ -21,10 +33,19 @@ export default class ChordProgression {
         this.advance();
     }
 
+    /**
+     * Returns the active tone set
+     * @returns array[string]
+     */
     getToneSet() { 
         return this.activeSet;
     }
 
+    /**
+     * Move the active tone set to the next in the progression.
+     * This moves circularly in a loop
+     * @returns the active set.
+     */
     advance() {
         this.index = this.index + 1;
         if (this.index >= this.toneSets.length) {

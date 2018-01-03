@@ -21,7 +21,7 @@ export default class HummerControls extends React.Component {
             app: props.app,
             openMenu: false,
             tempo: props.app.conductor.getTempo(),
-            started: true,
+            started: props.app.hummer.isRunning(),
             tempoLabel: `Tempo: ${props.app.conductor.getTempo()} BPM`,
         };
 

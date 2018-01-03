@@ -37,7 +37,7 @@ export default class BouncingBallsControls extends React.Component {
 
         this.state.app.conductor.setSynth(this.state.synth);
         this.state.app.conductor.setKey(this.state.key);
-        this.state.app.conductor.setChord(this.state.chord);
+        this.state.app.conductor.setTonic(this.state.chord);
     }
 
     handleKeyPress(e) {
@@ -140,7 +140,7 @@ export default class BouncingBallsControls extends React.Component {
     changeChord(event, index, value) {
         console.log("Chord", value);
         this.setState({ chord: value });
-        this.state.app.conductor.setChord(value);
+        this.state.app.conductor.setTonic(value);
         this.state.app.conductor.coordinate(this.state.app.world);
     }
 

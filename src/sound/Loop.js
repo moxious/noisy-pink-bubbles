@@ -11,6 +11,10 @@ export default class Loop {
         return this.synth;
     }
 
+    isRunning() {
+        return this.started;
+    }
+
     play(time) {
         throw new Error('Subclass me');
     }
