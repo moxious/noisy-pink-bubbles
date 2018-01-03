@@ -18,13 +18,33 @@ export default class Conductor {
     constructor(props={}) {
         this.tonic = props.tonic || 'C';
         this.key = props.key || 'M';
-        this.tempo = props.tempo || 90;
-        this.octaves = props.octaves || ['3', '4', '5'];
+        this.tempo = props.tempo || 110;
+        this.octaves = props.octaves || ['4', '5', '6'];
         this.synth = props.synth || 'triangle';
         this.muted = props.muted || false;
         this.tones = Tonal.Chord.notes(this.getTonalChord());
         this.listeners = [];
-        this.progression = ChordProgression.in(this.tonic, this.key);
+        this.progression = new ChordProgression(['C', 'F', 'Am', 'G'])
+            // ChordProgression.in(this.tonic, this.key);
+
+        // this.loopProgression();
+    }
+
+    loopProgression() {
+        const beatsPerSecond = this.tempo / 60;  // tempo is bpm.
+        console.log(this.tempo, 'BPM is', beatsPerSecond, 'per sec.');
+        const scheduleChange = 4 / beatsPerSecond; // one measure, in seconds.
+
+        console.log('Changing in ', scheduleChange, ' seconds');
+        setTimeout(() => {
+            const tones = this.progression.advance();
+            this.setTonic(tones[0]);
+            this.setTones(tones);
+            
+            console.log('Progression advance', tones);
+
+            this.loopProgression();
+        }, scheduleChange * 1000);
     }
 
     /**
@@ -139,7 +159,7 @@ export default class Conductor {
 
         this.tonic = tonic;
         this.tones = Tonal.Chord.notes(this.getTonalChord());
-        this.progression = ChordProgression.in(this.tonic, this.key);
+        // this.progression = ChordProgression.in(this.tonic, this.key);
         this.notify('tonic');
         return this.getTonic(); 
     }
@@ -153,7 +173,7 @@ export default class Conductor {
         this.key = key;
         this.notify('key');
         this.tones = Tonal.Chord.notes(this.getTonalChord());
-        this.progression = ChordProgression.in(this.tonic, this.key);
+        // this.progression = ChordProgression.in(this.tonic, this.key);
         console.log('KEY: ', this.tones, ' for ', this.getTonalChord());
         return this.getKey(); 
     }

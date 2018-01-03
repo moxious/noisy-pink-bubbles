@@ -22,14 +22,27 @@ export default class BouncingBallsControls extends React.Component {
         // Contains world, conductor.
         this.state = {
             app: props.app,
-            chord: "C",
+            tonic: "C",
             key: "M",
             synth: "AM",
             paused: false,
             muted: false,
         };
 
+        props.app.conductor.register(this);
         console.log('CanvasControls state ', this.state);
+    }
+
+    onConductorChange(setting, newValue, conductor) {
+        const weCareAbout = ['tonic', 'key', 'synth'];
+        console.log('Controls heard ', setting, newValue);
+        if (weCareAbout.indexOf(setting) > -1) {
+            if (this.state[setting] !== newValue) {
+                const newState = {};
+                newState[setting] = newValue;
+                this.setState(newState);
+            }
+        }
     }
 
     componentDidMount() {
@@ -37,7 +50,7 @@ export default class BouncingBallsControls extends React.Component {
 
         this.state.app.conductor.setSynth(this.state.synth);
         this.state.app.conductor.setKey(this.state.key);
-        this.state.app.conductor.setTonic(this.state.chord);
+        this.state.app.conductor.setTonic(this.state.tonic);
     }
 
     handleKeyPress(e) {
@@ -50,8 +63,8 @@ export default class BouncingBallsControls extends React.Component {
 
         var valid = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
         if (valid.indexOf(button.toLowerCase()) > -1) {
-            this.setState({ chord: button.toUpperCase() });
-            this.state.app.conductor.setTonic(this.state.chord);
+            this.setState({ tonic: button.toUpperCase() });
+            this.state.app.conductor.setTonic(this.state.tonic);
 
             if (button === button.toLowerCase()) {
                 this.state.app.conductor.setKey('m');
@@ -137,9 +150,8 @@ export default class BouncingBallsControls extends React.Component {
         this.state.app.world.getPhysics().warp(2);
     }
 
-    changeChord(event, index, value) {
-        console.log("Chord", value);
-        this.setState({ chord: value });
+    changeTonic(event, index, value) {
+        this.setState({ tonic: value });
         this.state.app.conductor.setTonic(value);
         this.state.app.conductor.coordinate(this.state.app.world);
     }
@@ -192,8 +204,8 @@ export default class BouncingBallsControls extends React.Component {
                 <IconButton disabled={this.state.paused} tooltip="Remove Ball" onClick={(e) => this.addBody(-1)}><RemoveCircle/></IconButton> */}
             </ToolbarGroup>
             <ToolbarGroup>
-                <SelectField value={this.state.chord} id='tonicSelector'
-                    onChange={(e, i, v) => this.changeChord(e, i, v)}>
+                <SelectField value={this.state.tonic} id='tonicSelector'
+                    onChange={(e, i, v) => this.changeTonic(e, i, v)}>
                     <MenuItem value='A' primaryText='A'/>
                     <MenuItem value='Bb' primaryText='A#/Bb'/>
                     <MenuItem value='B' primaryText='B'/>

@@ -19,7 +19,16 @@ export default class BodySound {
             synth: this.conductor.makeSynth(),
         };
 
+        this.conductor.register(this);
         this.reassign(false);
+    }
+
+    onConductorChange(changeType, value, conductor) {
+        if (changeType === 'synth') {
+            return this.reassign(true);
+        }
+
+        return this.reassign(false);
     }
 
     reassign(replaceSynth) {

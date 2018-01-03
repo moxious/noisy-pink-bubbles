@@ -20,7 +20,6 @@ export default class Hummer extends Loop {
 
     onConductorChange(changeType, newValue, conductor){
         if (changeType === 'tonic' || changeType === 'key') {
-            console.log('Changing hummer progression');
             this.cp = ChordProgression.I_IV_V(conductor.getTonic(), conductor.getKey());
         }
     }

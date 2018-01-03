@@ -1,22 +1,28 @@
 import * as Tonal from 'tonal';
 import * as Key from 'tonal-key';
 
+// Remove default 7ths added.
+const remove7ths = chord => {
+    const n = chord.replace(/(Maj|m)7/, '');
+    return n;
+};
+
 export default class ChordProgression {
     static I_IV_V = (tonic, key) => {
         const k = (key === 'M' ? 'major' : 'minor');
-        const chords = Key.chords(`${tonic} ${k}`);
+        const chords = Key.chords(`${tonic} ${k}`).map(remove7ths);
         // console.log('I IV V FROM ', tonic, k, )
         return new ChordProgression([chords[0], chords[3], chords[4]]);
     };
 
     static i_VI_VII = (tonic) => {
-        const chords = Key.chords(`${tonic} minor`);
+        const chords = Key.chords(`${tonic} minor`).map(remove7ths);
         return new ChordProgression([chords[0], chords[5], chords[6]]);
     }
 
     static in(tonic, key) {
         if (key === 'M') {
-            return ChordProgression.I_IV_V(tonic, key);
+            return ChordProgression.I_IV_V(tonic, key)
         }
 
         return ChordProgression.i_VI_VII(tonic, key);

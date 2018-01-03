@@ -123,7 +123,6 @@ export default class World {
 
         const s = {};
         if (Math.random() < NON_EMOJI_PERCENT || renderer.createDisplay) {
-            console.log('Canvas style bubble');
             s.styles = opts.styles || this.styleBubble();
         } else {            
             s.view = renderer.createDisplay('sprite', {
@@ -146,8 +145,6 @@ export default class World {
             restitution: numberDefault(opts.restitution, 1),
             treatment: opts.treatment || 'dynamic',
         }, s);
-
-        console.log('Bodyprops', bodyProps);
 
         return Physics.body(opts.shape || 'circle', bodyProps);
     }
