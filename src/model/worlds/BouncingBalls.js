@@ -67,7 +67,7 @@ export default class BouncingBalls extends World {
             var edgeBounce = Physics.behavior('edge-collision-detection', {
                 aabb: viewportBounds,
                 restitution: 1,
-                cof: 1,
+                cof: 0,
             });
 
             // resize events

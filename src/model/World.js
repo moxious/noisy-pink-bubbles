@@ -134,13 +134,13 @@ export default class World {
         const bodyProps = _.merge({
             x: numberDefault(opts.x, Math.random() * renderer.width),
             y: numberDefault(opts.y, 0),
-            vx: numberDefault(opts.vx, (Math.random() * 0.5 * (neg ? -1 : 1))),
-            vy: numberDefault(opts.vy, (Math.random() * 0.5 * (neg ? -1 : 1))),
+            vx: numberDefault(opts.vx, (0.2/*Math.random() * 0.4 */* (neg ? -1 : 1))),
+            vy: numberDefault(opts.vy, (0.2/*Math.random() * 0.4 */* (neg ? -1 : 1))),
             mass: opts.mass || 0.1, // cannot be zero.
             radius: numberDefault(opts.radius, 20),
             width: numberDefault(opts.width, 30),
             height: numberDefault(opts.height, 30),
-            cof: numberDefault(opts.cof, 0.7),
+            cof: numberDefault(opts.cof, 0),
             label: opts.label || 'body-' + (++this.bodyCounter),
             restitution: numberDefault(opts.restitution, 1),
             treatment: opts.treatment || 'dynamic',
